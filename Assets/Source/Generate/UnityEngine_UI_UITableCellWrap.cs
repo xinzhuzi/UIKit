@@ -24,7 +24,7 @@ public class UnityEngine_UI_UITableCellWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.UITableCell obj = (UnityEngine.UI.UITableCell)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableCell));
+			UnityEngine.UI.UITableCell obj = (UnityEngine.UI.UITableCell)ToLua.CheckObject<UnityEngine.UI.UITableCell>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			obj.UpdateCell(arg0);
 			return 0;
@@ -41,7 +41,7 @@ public class UnityEngine_UI_UITableCellWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableCell obj = (UnityEngine.UI.UITableCell)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableCell));
+			UnityEngine.UI.UITableCell obj = (UnityEngine.UI.UITableCell)ToLua.CheckObject<UnityEngine.UI.UITableCell>(L, 1);
 			obj.AutoGet();
 			return 0;
 		}

@@ -72,7 +72,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.CheckObject(L, 2, typeof(UnityEngine.GameObject));
 			obj.SetBgScrollListener(arg0);
 			return 0;
@@ -89,7 +89,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.ClearCells();
 			return 0;
 		}
@@ -105,7 +105,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 3);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			float arg1 = (float)LuaDLL.luaL_checknumber(L, 3);
 			obj.ScrollToCell(arg0, arg1);
@@ -123,7 +123,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.RefreshCells();
 			return 0;
 		}
@@ -142,20 +142,20 @@ public class UnityEngine_UI_UITableViewWrap
 
 			if (count == 1)
 			{
-				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 				obj.RefillCellsFromEnd();
 				return 0;
 			}
 			else if (count == 2)
 			{
-				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 				int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 				obj.RefillCellsFromEnd(arg0);
 				return 0;
 			}
 			else if (count == 3)
 			{
-				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 				int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 3);
 				obj.RefillCellsFromEnd(arg0, arg1);
@@ -181,20 +181,20 @@ public class UnityEngine_UI_UITableViewWrap
 
 			if (count == 1)
 			{
-				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 				obj.RefillCells();
 				return 0;
 			}
 			else if (count == 2)
 			{
-				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 				int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 				obj.RefillCells(arg0);
 				return 0;
 			}
 			else if (count == 3)
 			{
-				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+				UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 				int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 				bool arg1 = LuaDLL.luaL_checkboolean(L, 3);
 				obj.RefillCells(arg0, arg1);
@@ -217,7 +217,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			UnityEngine.UI.CanvasUpdate arg0 = (UnityEngine.UI.CanvasUpdate)ToLua.CheckObject(L, 2, typeof(UnityEngine.UI.CanvasUpdate));
 			obj.Rebuild(arg0);
 			return 0;
@@ -234,7 +234,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.LayoutComplete();
 			return 0;
 		}
@@ -250,7 +250,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.GraphicUpdateComplete();
 			return 0;
 		}
@@ -266,7 +266,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			bool o = obj.IsActive();
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
@@ -283,7 +283,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.StopMovement();
 			return 0;
 		}
@@ -299,7 +299,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnScroll(arg0);
 			return 0;
@@ -316,7 +316,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnInitializePotentialDrag(arg0);
 			return 0;
@@ -333,7 +333,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnBeginDrag(arg0);
 			return 0;
@@ -350,7 +350,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnEndDrag(arg0);
 			return 0;
@@ -367,7 +367,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 2);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			UnityEngine.EventSystems.PointerEventData arg0 = (UnityEngine.EventSystems.PointerEventData)ToLua.CheckObject(L, 2, typeof(UnityEngine.EventSystems.PointerEventData));
 			obj.OnDrag(arg0);
 			return 0;
@@ -384,7 +384,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.CalculateLayoutInputHorizontal();
 			return 0;
 		}
@@ -400,7 +400,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.CalculateLayoutInputVertical();
 			return 0;
 		}
@@ -416,7 +416,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.SetLayoutHorizontal();
 			return 0;
 		}
@@ -432,7 +432,7 @@ public class UnityEngine_UI_UITableViewWrap
 		try
 		{
 			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject(L, 1, typeof(UnityEngine.UI.UITableView));
+			UnityEngine.UI.UITableView obj = (UnityEngine.UI.UITableView)ToLua.CheckObject<UnityEngine.UI.UITableView>(L, 1);
 			obj.SetLayoutVertical();
 			return 0;
 		}

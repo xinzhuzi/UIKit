@@ -50,9 +50,8 @@ public class UIKit_UIHelperWrap
 	{
 		try
 		{
-			ToLua.CheckArgsCount(L, 2);
+			ToLua.CheckArgsCount(L, 1);
 			string arg0 = ToLua.CheckString(L, 1);
-			bool arg1 = LuaDLL.luaL_checkboolean(L, 2);
 			UnityEngine.Object o = UIKit.UIHelper.Create(arg0);
 			ToLua.Push(L, o);
 			return 1;

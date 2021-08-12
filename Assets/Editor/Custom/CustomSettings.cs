@@ -130,7 +130,7 @@ public static class CustomSettings
         _GT(typeof(Resources)),     
         _GT(typeof(LuaProfiler)),
  
-        
+        _GT(typeof(UnityEngine.SceneManagement.SceneManager)),
         
         // UGUI & TextMeshPro
         _GT(typeof(UIManager)),
@@ -210,7 +210,7 @@ public static class CustomSettings
         
     };
         
-    //ngui优化，下面的类没有派生类，可以作为sealed class
+    //下面的类没有派生类，可以作为sealed class
     public static List<Type> sealedList = new List<Type>()
     {
         // UGUI & TextMeshPro
@@ -253,8 +253,6 @@ public static class CustomSettings
         typeof(UnityEngine.RectTransform),
         typeof(UnityEngine.U2D.SpriteAtlas),
         typeof(UnityEngine.Sprite),
-        typeof(UnityEngine.UI.UITableView),
-        typeof(UnityEngine.UI.UITableCell),
     };
 
     public static BindType _GT(Type t)
