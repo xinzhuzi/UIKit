@@ -36,3 +36,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 .DS_Store
+*.idea
+*Logs
+*obj
+*Temp
