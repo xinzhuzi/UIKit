@@ -36,7 +36,7 @@ namespace UIKit
             }
 
             //达到上限了,需要从最底层的哪一个删除掉,缓存不易过多
-            if (_cache.Count == _capacity) _cache.RemoveByValue(transform.GetChild(0).gameObject);
+            if (_cache.Count == _capacity) Destroy(transform.GetChild(0).gameObject);
             
             //设置进池子里面
             module.transform.SetParent(this.transform);
@@ -67,6 +67,15 @@ namespace UIKit
 
             DestroyImmediate(module);
             return _cache.RemoveByKey(id);
+        }
+        
+        //不需要此缓存了
+        public bool Destroy(GameObject go)
+        {
+            if (!_cache.ContainsValue(go)) return false;
+            _cache.RemoveByValue(go);
+            DestroyImmediate(go);
+            return true;
         }
 
         //清除所有的 UI 缓存,切换场景时使用
