@@ -1,0 +1,171 @@
+----[[--
+-- * @Description: Description
+-- * @Author:      armyshu
+-- * @FileName:    class.lua
+-- * @DateTime:    2015-06-04 12:02:33
+-- ]]
+--
+--
+----class = {}
+----local this = class
+----
+----
+----
+------[[--
+---- * @Description: desc  
+---- * @param:       string :name
+---- * @return:      nil
+---- ]]
+----function this.doSomething1()
+----
+----
+----end
+----
+------[[--
+---- * @Description: desc  
+---- * @param:       string :name
+---- * @return:      nil
+---- ]]
+----function this.doSomething2()
+----
+----
+----end
+----
+------[[--
+---- * @Description: desc  
+---- * @param:       string :name
+---- * @return:      nil
+---- ]]
+----function this.doSomething3()
+----
+----
+----end
+--
+--function class(classname, super)
+--    local superType = type(super)
+--    local cls
+--    
+--    if superType ~= "function" and superType ~= "table" then
+--        superType = nil
+--        super = nil
+--    end
+--
+--    if superType == "function" or (super and super.__ctype == 1) then
+--        -- inherited from native C++ Object
+--        cls = {}
+--        if superType == "table" then
+--            -- copy fields from super
+--            for k,v in pairs(super) do cls[k] = v end
+--            cls.__create = super.__create
+--            cls.super    = super
+--        else
+--            cls.__create = super
+--            cls.ctor    = function() end
+--        end
+--        cls.__cname = classname
+--        cls.__ctype = 1
+--        function cls.New(...)
+--            local instance = cls.__create(...)
+--            -- copy fields from class to native object
+--            for k,v in pairs(cls) do instance[k] = v end
+--            instance.class = cls
+--            local tabCtor = {}
+--            if not IsSuperCtor(instance) then
+--                tabCtor = {instance}
+--            end
+--
+--            local tSuper = instance.super;
+--            while tSuper do
+--                if not IsSuperCtor(tSuper) then
+--                    table.insert( tabCtor,tSuper)
+--                end
+--                tSuper = tSuper.super;
+--            end
+--
+--            local tcount = #tabCtor
+--            for i=tcount,1,-1 do
+--                tabCtor[i].ctor(instance,...)
+--            end
+--            return instance
+--        end
+--
+--    else
+--        if super then
+--            cls = clone(super)
+--            cls.super = super
+--        else
+--            cls = {ctor = function() end}
+--        end
+--
+--        cls.__cname = classname
+--        cls.__ctype = 2 -- lua
+--        cls.__index = cls
+--
+--        function cls.New(...)
+--            local instance = setmetatable({}, cls)
+--            instance.class = cls
+--            local tabCtor = {}
+--            if not IsSuperCtor(instance) then
+--                tabCtor = {instance}
+--            end
+--
+--            local tSuper = instance.super;
+--            while tSuper do
+--                if not IsSuperCtor(tSuper) then
+--                    table.insert( tabCtor,tSuper)
+--                end
+--                tSuper = tSuper.super;
+--            end
+--
+--            local tcount = #tabCtor
+--            for i=tcount,1,-1 do
+--                tabCtor[i].ctor(instance,...)
+--            end
+--            return instance
+--        end
+--    end
+--
+--    return cls
+--end
+--
+----==============================--
+----desc:是否是基类
+----time:2017-05-17 09:51:51
+----@instance:对象实例class
+----@return true / false
+----==============================--
+--function IsSuperCtor(instance)
+--    local super = instance.super
+--
+--    while super do
+--        if instance.ctor == super.ctor then
+--            return true
+--        end
+--        super = super.super
+--    end
+--    return false
+--end
+--
+----==============================--
+----desc:深度拷贝一个class
+----time:2017-05-17 09:53:12
+----@object:目标对象class
+----@return 深度拷贝后的calss
+----==============================--
+--function clone(object)
+--    local lookup_table = {}
+--    local function _copy(object)
+--        if type(object) ~= "table" then
+--            return object
+--        elseif lookup_table[object] then
+--            return lookup_table[object]
+--        end
+--        local new_table = {}
+--        lookup_table[object] = new_table
+--        for key, value in pairs(object) do
+--            new_table[_copy(key)] = _copy(value)
+--        end
+--        return setmetatable(new_table, getmetatable(object))
+--    end
+--    return _copy(object)
+--end

@@ -15,61 +15,35 @@ namespace UIKit
         //Load 完毕之后还是一个解压的内存块,类似一个模板,不能直接使用,是被缓存的,需要实例化.
         public static UnityEngine.Object Load(string path)
         {
-            return null;
-            // return AB.Load(PrefabPath + path, typeof(UnityEngine.Object), AB.ELOADTIME.UI);
+            return Resources.Load(path);
         }
 
         //创建是在 Load 之后进行实例化,可以直接使用,需要使用 UIManager.Instance:Open("xxx");才能正常显示
-        public static UnityEngine.Object Create(string path, bool isManualUnLoad)
+        public static UnityEngine.Object Create(string path)
         {
-            return null;
-
-            // return AB.Create<GameObject>(PrefabPath + path, AB.ELOADTIME.UI);
+            return UnityEngine.Object.Instantiate(Resources.Load(path));
         }
 
         public static void LoadAsync(string path, Action<UnityEngine.Object> action)
         {
-            // AB.LoadAsync<GameObject>(PrefabPath + path, (state) =>
-            // {
-            //     // GameObject go = UnityEngine.Object.Instantiate(state.asset) as GameObject;
-            //     action?.Invoke(state.asset);
-            // }, AB.ELOADTIME.UI);
+            
         }
 
 
         //创建是在 Load 之后进行实例化,可以直接使用,需要使用 UIManager.Instance:Open("xxx");才能正常显示
         public static void CreateAsync(string path, Action<UnityEngine.GameObject> action)
         {
-            // AB.LoadAsync<GameObject>(PrefabPath + path, (state) =>
-            // {
-            //     GameObject go = UnityEngine.Object.Instantiate(state.asset) as GameObject;
-            //     action?.Invoke(go);
-            // }, AB.ELOADTIME.UI);
+           
         }
 
         public static Sprite GetSprite(string spriteAtlasName, string spriteName)
         {
-            return null;
-            // var spriteAtlas = AB.Load<SpriteAtlas>(spriteAtlasName, AB.ELOADTIME.UI);
-            // if (spriteAtlas == null)
-            // {
-            //     throw new Exception("加载图集错误,spriteAtlasName:" + spriteAtlasName + "     spriteName:" + spriteName);
-            // }
-            //
-            // return spriteAtlas.GetSprite(spriteName);
+            return Resources.Load<SpriteAtlas>(spriteAtlasName).GetSprite(spriteName);
         }
         
         public static void GetSpriteAsync(string spriteAtlasName, string spriteName, Action<Sprite> action)
         {
-            // AB.LoadAsync<SpriteAtlas>(spriteAtlasName, (state) =>
-            // {
-            //     SpriteAtlas spriteAtlas = state.asset as SpriteAtlas;
-            //     if (spriteAtlas == null)
-            //     {
-            //         throw new Exception("加载图集错误,spriteAtlasName:" + spriteAtlasName + "     spriteName:" + spriteName);
-            //     }
-            //     action?.Invoke(spriteAtlas.GetSprite(spriteName));
-            // }, AB.ELOADTIME.UI);
+            
         }
         
         #endregion
@@ -78,8 +52,8 @@ namespace UIKit
         
         public static GameObject AddChild(Transform parent, GameObject child)
         {
-            GameObject go = UnityEngine.Object.Instantiate(child, parent.transform, false);
-            RectTransform t = go.GetComponent<RectTransform>();
+            var go = UnityEngine.Object.Instantiate(child, parent.transform, false);
+            var t = go.GetComponent<RectTransform>();
             t.localRotation = Quaternion.identity;
             t.localScale = Vector3.one;
             return go;
@@ -125,13 +99,13 @@ namespace UIKit
         {
             get
             {
-                TextEditor te = new TextEditor();
+                var te = new TextEditor();
                 te.Paste();
                 return te.text;
             }
             set
             {
-                TextEditor te = new TextEditor {text = value};
+                var te = new TextEditor {text = value};
                 te.OnFocus();
                 te.Copy();
             }

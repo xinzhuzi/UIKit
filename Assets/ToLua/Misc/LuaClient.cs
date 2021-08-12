@@ -171,7 +171,7 @@ public class LuaClient : MonoBehaviour
     {
         Instance = this;
         Init();
-
+        DontDestroyOnLoad(this);
 #if UNITY_5_4_OR_NEWER
         SceneManager.sceneLoaded += OnSceneLoaded;
 #endif        

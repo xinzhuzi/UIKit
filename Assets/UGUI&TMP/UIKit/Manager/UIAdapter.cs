@@ -34,7 +34,7 @@ namespace UIKit
         private static int _cachedWidth = Screen.width;
         private static int _cachedHeight = Screen.height;
         private List<RectTransform> _adapterGraphics;
-
+        
         private void Start()
         {
             _canvas = UIManager.Instance.GetComponent<Canvas>();
@@ -51,6 +51,7 @@ namespace UIKit
             _cachedHeight = Screen.height;
             
             _canvasScaler.referenceResolution = _canvas.GetComponent<RectTransform>().sizeDelta;
+            _screenRectTransform.sizeDelta = _canvasScaler.referenceResolution;
             //第一步:计算屏幕安全区域与屏幕不安全区域,这个需要 iOS 与 Android 配合.目前直接使用 Unity 的 API 即可
             //计算安全区域的宽度,要与canvas的像素比例匹配
             var ratio = (_canvasScaler.referenceResolution.x / Screen.width);
@@ -133,21 +134,5 @@ namespace UIKit
             var rt = go.GetComponent<RectTransform>();
             RemoveAdapter(rt);
         }
-
-
-        // private RectTransform InitScreenRectTransform()
-        // {
-        //     var go = new GameObject("ScreenRT");
-        //     var rt = go.AddComponent<RectTransform>();
-        //     go.transform.parent = canvas.transform;
-        //     rt.localScale = Vector3.one;
-        //     rt.anchorMin = Vector2.zero;
-        //     rt.anchorMax = Vector2.zero;
-        //     rt.pivot = Vector2.zero;
-        //     rt.localPosition = Vector3.zero;
-        //     rt.anchoredPosition = Vector2.zero;
-        //     rt.sizeDelta = canvas.GetComponent<RectTransform>().sizeDelta;
-        //     return rt;
-        // }
     }
 }
