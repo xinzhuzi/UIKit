@@ -25,6 +25,7 @@ using LuaInterface;
 using System.Collections;
 using System.IO;
 using System;
+using UIKit;
 #if UNITY_5_4_OR_NEWER
 using UnityEngine.SceneManagement;
 #endif
@@ -161,6 +162,7 @@ public class LuaClient : MonoBehaviour
     {        
         InitLoader();
         luaState = new LuaState();
+        LuaHelper.AddUILuaFullFileName();
         OpenLibs();
         luaState.LuaSetTop(0);
         Bind();        

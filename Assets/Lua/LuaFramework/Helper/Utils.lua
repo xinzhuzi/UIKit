@@ -1,7 +1,7 @@
 --require("common/XArray")
 --require("common/TestMode")
 require("LuaFramework/Algorithm/XArray")
-require("LuaFramework/Algorithm/TestMode")
+--require("LuaFramework/Algorithm/TestMode")
 
 Utils = {}
 

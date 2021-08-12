@@ -10,18 +10,18 @@ namespace UIKit
     {
         #region 加载
        
-        public const string PrefabPath = "Prefabs/UI/";
+        public const string PrefabPath = "UI/";
         
         //Load 完毕之后还是一个解压的内存块,类似一个模板,不能直接使用,是被缓存的,需要实例化.
         public static UnityEngine.Object Load(string path)
         {
-            return Resources.Load(path);
+            return Resources.Load(PrefabPath+path);
         }
 
         //创建是在 Load 之后进行实例化,可以直接使用,需要使用 UIManager.Instance:Open("xxx");才能正常显示
         public static UnityEngine.Object Create(string path)
         {
-            return UnityEngine.Object.Instantiate(Resources.Load(path));
+            return UnityEngine.Object.Instantiate(Resources.Load(PrefabPath+path));
         }
 
         public static void LoadAsync(string path, Action<UnityEngine.Object> action)

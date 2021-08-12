@@ -140,7 +140,7 @@ public static class CustomSettings
         _GT(typeof(LocalisationText)),
         _GT(typeof(UnityEngine.UI.UIDoubleClickListener)),
         _GT(typeof(UnityEngine.UI.UIDragListener)),
-        // _GT(typeof(UnityEngine.UI.UIEventListener)),
+        _GT(typeof(UnityEngine.UI.UIEventListener)),
         _GT(typeof(UnityEngine.UI.UILongPressListener)),
         _GT(typeof(UnityEngine.UI.UIPointAllListener)),
         _GT(typeof(UnityEngine.UI.UIPointClickListener)),

@@ -8,7 +8,7 @@ namespace UnityEditor.UI
 {
     public static class MenuSpriteAtlas
     {
-        private static string SavePath = "Assets/RAW/f1_ui/atlas/";
+        private static string SavePath = "Assets/Editor Default Resources/SpriteAtlas/";
         
         [MenuItem("Assets/UI/创建或者更新 SpriteAtlas", false, 1)]
         public static void CreateSpriteAtlas(MenuCommand menuCommand)
@@ -84,7 +84,14 @@ namespace UnityEditor.UI
 #if !UNITY_2019_4
             if (EditorSettings.spritePackerMode == SpritePackerMode.SpriteAtlasV2) suffix = ".spriteatlasv2";
 #endif
-            SavePath += dirPath.Split('/').Last();
+            if (Directory.Exists(SavePath))
+            {
+                SavePath += dirPath.Split('/').Last();
+            }
+            else
+            {
+                SavePath = dirPath;
+            }
             AssetDatabase.CreateAsset(spriteAtlas, SavePath + suffix);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();

@@ -1,10 +1,3 @@
---[[--
- * @Description: 全局对象
- * @Author:      zhuzizheng
- * @FileName:    Global.lua
- * @DateTime:    2020-08-01 14:23:43
- ]]
-
 ------------------------- 全局变量 ---------------------
 
 _G.String 			        = System.String
@@ -30,16 +23,12 @@ _G.SceneManager             = UnityEngine.SceneManagement.SceneManager
 _G.Scene  			        = UnityEngine.SceneManagement.Scene
 _G.AnimationEvent           = UnityEngine.AnimationEvent
 _G.ColorUtility             = UnityEngine.ColorUtility
-_G.AppKernel                = Framework.AppKernel
-_G.BusinessServer           = Network.BusinessServer
 _G.ListKPStr2Int		    = System.Collections.Generic.ListKPStr2Int
 _G.List_string              = System.Collections.Generic.List_string
 _G.List_int                 = System.Collections.Generic.List_int
 _G.List_EventDelegate       = System.Collections.Generic.List_EventDelegate
 _G.List_UnityEngine_Vector3 = System.Collections.Generic.List_UnityEngine_Vector3
 _G.Debugger                 = LuaInterface.Debugger
-_G.SDKManager               = SDK.SDKManager
-_G.PlatformFixed            = SDK.PlatformFixed
 
 ------------------------- UI 框架所需要的全局对象 ---------------------
 
@@ -47,7 +36,7 @@ _G.UIManager			    = UIKit.UIManager       -- UIManager 管理所有 UI 的对�
 _G.UIAdapter		        = UIKit.UIAdapter       -- UIAdapter 适配器,适配横屏,左右的小组件
 _G.UIDoubleClickListener    = UnityEngine.UI.UIDoubleClickListener -- 双击
 _G.UIDragListener           = UnityEngine.UI.UIDragListener        -- 拖拽
---_G.UIEventListener          = UnityEngine.UI.UIEventListener       -- 所有的事件
+_G.UIEventListener          = UnityEngine.UI.UIEventListener       -- 所有的事件
 _G.UILongPressListener      = UnityEngine.UI.UILongPressListener   -- 长按事件
 _G.UIPointAllListener       = UnityEngine.UI.UIPointAllListener    -- 所有的 Point 事件
 _G.UIPointClickListener     = UnityEngine.UI.UIPointClickListener  -- 只有一个 Point 中的点击事件
@@ -80,13 +69,6 @@ require("LuaFramework/UIKit/UIModel")
 require("LuaFramework/UIKit/UIModule")
 require("LuaFramework/UIKit/UIView")
 --require("LuaFramework/GlobalChecker")  --检查变量是否特殊,此项检查目前不开启
-
-require("sdk/sdk")
-require("logic/framework/logicLuaObjMgr")
-require("logic/framework/cmdName")
-require("logic/common/config_data_center")
-require("logic/framework/NetworkMgr")
-require("logic/common/f1_uibase")
 
 
 
@@ -169,53 +151,7 @@ function _G.PrintLua(name, lib)
     Debugger.Log("-----------------Dump Table Over-----------------")
 end
 
---通过id读取语言包文本
-function _G.GetLanuageTextById(_id)
-    local lang_item = config_data_center.getConfigDataByFunc('dataconfig_language',function(item)
-        if item.id == _id then
-            return true
-        else
-            return false
-        end
-    end)
-    if lang_item ~= nil then
-        return lang_item.text
-    else
-        return ''
-    end
-end
 
---通过id读取网络错误语言包文本
-function _G.GetErrorcodeTextById(_id)
-    local lang_item = config_data_center.getConfigDataByFunc('dataconfig_errorcode_lan',function(item)
-        if item.errorLanguageId == _id then
-            return true
-        else
-            return false
-        end
-    end)
-    if lang_item ~= nil then
-        return lang_item.errorText
-    else
-        return ''
-    end
-end
-
---根据错误码Id获得提示信息
-function _G.GetErrorTextById( _id)
-    local lang_item = config_data_center.getConfigDataByFunc('dataconfig_errorcode',function(item)
-        if item.id == _id then
-            return true
-        else
-            return false
-        end
-    end)
-    if lang_item ~= nil then
-        return GetErrorcodeTextById(lang_item.text)
-    else
-        return ''
-    end
-end
 
 
 

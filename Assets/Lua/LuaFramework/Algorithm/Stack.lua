@@ -1,10 +1,3 @@
---[[--
- * @Description:	栈
- * @Author:			Tony
- * @Path:			Stack
- * @DateTime:		2018/9/6 15:48
-]]
-
 Stack = {}
 Stack.__index = Stack
 

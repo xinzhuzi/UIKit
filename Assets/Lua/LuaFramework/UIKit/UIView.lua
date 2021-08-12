@@ -1,11 +1,3 @@
---[[--
- * @Description: UI MVC 模块中的 View,每一个 UIView 都需要继承此类,当 View 通过控制获取 Model 时,只有使用权,没有修改权
-                 修改权只在 UIController 中
- * @Author:      zhuzizheng
- * @FileName:    UIView.lua
- * @DateTime:    2020-08-01 14:23:43
- ]]
-
 --所有 UI 的父类,是一个多例,不是唯一的
 _G.UIView = class("UIView")
 local this = UIView

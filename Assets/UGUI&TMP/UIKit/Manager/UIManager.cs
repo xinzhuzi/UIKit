@@ -186,7 +186,7 @@ namespace UIKit
         
         
         //自动入口,目前不使用此方法,外部调用的第一个方法
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void RunGUIManager()
         {
             m_UIRoot = GameObject.Instantiate(Resources.Load<GameObject>("UIRoot"));

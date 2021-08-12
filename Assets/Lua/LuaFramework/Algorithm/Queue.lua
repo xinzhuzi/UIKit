@@ -1,10 +1,3 @@
---[[--
- * @Description:	队列
- * @Author:			Tony
- * @Path:			Queue
- * @DateTime:		2018/9/6 16:26
-]]
-
 Queue = {}
 Queue.__index = Queue
 

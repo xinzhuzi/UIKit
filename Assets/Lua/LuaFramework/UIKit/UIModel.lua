@@ -1,11 +1,3 @@
---[[--
- * @Description: UI 的数据类,每一个模块都有一个 UI 的数据类
- * @Author:      zhuzizheng
- * @FileName:    UIModel.lua
- * @DateTime:    2020-08-01 14:23:43
- ]]
-
-
 --所有 UI 的父类,是一个多例,不是唯一的
 _G.UIModel = class("UIModel")
 local this = UIModel

@@ -40,6 +40,8 @@ public class DelegateFactory
 		dict.Add(typeof(System.Action<UnityEngine.GameObject>), factory.System_Action_UnityEngine_GameObject);
 		dict.Add(typeof(System.Action<UnityEngine.Sprite>), factory.System_Action_UnityEngine_Sprite);
 		dict.Add(typeof(System.Action<UnityEngine.EventSystems.PointerEventData>), factory.System_Action_UnityEngine_EventSystems_PointerEventData);
+		dict.Add(typeof(System.Action<UnityEngine.EventSystems.BaseEventData>), factory.System_Action_UnityEngine_EventSystems_BaseEventData);
+		dict.Add(typeof(System.Action<UnityEngine.EventSystems.AxisEventData>), factory.System_Action_UnityEngine_EventSystems_AxisEventData);
 		dict.Add(typeof(System.Action<TMPro.TMP_TextInfo>), factory.System_Action_TMPro_TMP_TextInfo);
 		dict.Add(typeof(TMPro.TMP_InputField.OnValidateInput), factory.TMPro_TMP_InputField_OnValidateInput);
 		dict.Add(typeof(UnityEngine.Canvas.WillRenderCanvases), factory.UnityEngine_Canvas_WillRenderCanvases);
@@ -70,6 +72,8 @@ public class DelegateFactory
 		DelegateTraits<System.Action<UnityEngine.GameObject>>.Init(factory.System_Action_UnityEngine_GameObject);
 		DelegateTraits<System.Action<UnityEngine.Sprite>>.Init(factory.System_Action_UnityEngine_Sprite);
 		DelegateTraits<System.Action<UnityEngine.EventSystems.PointerEventData>>.Init(factory.System_Action_UnityEngine_EventSystems_PointerEventData);
+		DelegateTraits<System.Action<UnityEngine.EventSystems.BaseEventData>>.Init(factory.System_Action_UnityEngine_EventSystems_BaseEventData);
+		DelegateTraits<System.Action<UnityEngine.EventSystems.AxisEventData>>.Init(factory.System_Action_UnityEngine_EventSystems_AxisEventData);
 		DelegateTraits<System.Action<TMPro.TMP_TextInfo>>.Init(factory.System_Action_TMPro_TMP_TextInfo);
 		DelegateTraits<TMPro.TMP_InputField.OnValidateInput>.Init(factory.TMPro_TMP_InputField_OnValidateInput);
 		DelegateTraits<UnityEngine.Canvas.WillRenderCanvases>.Init(factory.UnityEngine_Canvas_WillRenderCanvases);
@@ -100,6 +104,8 @@ public class DelegateFactory
 		TypeTraits<System.Action<UnityEngine.GameObject>>.Init(factory.Check_System_Action_UnityEngine_GameObject);
 		TypeTraits<System.Action<UnityEngine.Sprite>>.Init(factory.Check_System_Action_UnityEngine_Sprite);
 		TypeTraits<System.Action<UnityEngine.EventSystems.PointerEventData>>.Init(factory.Check_System_Action_UnityEngine_EventSystems_PointerEventData);
+		TypeTraits<System.Action<UnityEngine.EventSystems.BaseEventData>>.Init(factory.Check_System_Action_UnityEngine_EventSystems_BaseEventData);
+		TypeTraits<System.Action<UnityEngine.EventSystems.AxisEventData>>.Init(factory.Check_System_Action_UnityEngine_EventSystems_AxisEventData);
 		TypeTraits<System.Action<TMPro.TMP_TextInfo>>.Init(factory.Check_System_Action_TMPro_TMP_TextInfo);
 		TypeTraits<TMPro.TMP_InputField.OnValidateInput>.Init(factory.Check_TMPro_TMP_InputField_OnValidateInput);
 		TypeTraits<UnityEngine.Canvas.WillRenderCanvases>.Init(factory.Check_UnityEngine_Canvas_WillRenderCanvases);
@@ -130,6 +136,8 @@ public class DelegateFactory
 		StackTraits<System.Action<UnityEngine.GameObject>>.Push = factory.Push_System_Action_UnityEngine_GameObject;
 		StackTraits<System.Action<UnityEngine.Sprite>>.Push = factory.Push_System_Action_UnityEngine_Sprite;
 		StackTraits<System.Action<UnityEngine.EventSystems.PointerEventData>>.Push = factory.Push_System_Action_UnityEngine_EventSystems_PointerEventData;
+		StackTraits<System.Action<UnityEngine.EventSystems.BaseEventData>>.Push = factory.Push_System_Action_UnityEngine_EventSystems_BaseEventData;
+		StackTraits<System.Action<UnityEngine.EventSystems.AxisEventData>>.Push = factory.Push_System_Action_UnityEngine_EventSystems_AxisEventData;
 		StackTraits<System.Action<TMPro.TMP_TextInfo>>.Push = factory.Push_System_Action_TMPro_TMP_TextInfo;
 		StackTraits<TMPro.TMP_InputField.OnValidateInput>.Push = factory.Push_TMPro_TMP_InputField_OnValidateInput;
 		StackTraits<UnityEngine.Canvas.WillRenderCanvases>.Push = factory.Push_UnityEngine_Canvas_WillRenderCanvases;
@@ -1570,6 +1578,120 @@ public class DelegateFactory
 	}
 
 	void Push_System_Action_UnityEngine_EventSystems_PointerEventData(IntPtr L, System.Action<UnityEngine.EventSystems.PointerEventData> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_UnityEngine_EventSystems_BaseEventData_Event : LuaDelegate
+	{
+		public System_Action_UnityEngine_EventSystems_BaseEventData_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_EventSystems_BaseEventData_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.EventSystems.BaseEventData param0)
+		{
+			func.BeginPCall();
+			func.PushObject(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.EventSystems.BaseEventData param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushObject(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<UnityEngine.EventSystems.BaseEventData> System_Action_UnityEngine_EventSystems_BaseEventData(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UnityEngine.EventSystems.BaseEventData> fn = delegate(UnityEngine.EventSystems.BaseEventData param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_UnityEngine_EventSystems_BaseEventData_Event target = new System_Action_UnityEngine_EventSystems_BaseEventData_Event(func);
+			System.Action<UnityEngine.EventSystems.BaseEventData> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_UnityEngine_EventSystems_BaseEventData_Event target = new System_Action_UnityEngine_EventSystems_BaseEventData_Event(func, self);
+			System.Action<UnityEngine.EventSystems.BaseEventData> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_UnityEngine_EventSystems_BaseEventData(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.EventSystems.BaseEventData>), L, pos);
+	}
+
+	void Push_System_Action_UnityEngine_EventSystems_BaseEventData(IntPtr L, System.Action<UnityEngine.EventSystems.BaseEventData> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_UnityEngine_EventSystems_AxisEventData_Event : LuaDelegate
+	{
+		public System_Action_UnityEngine_EventSystems_AxisEventData_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_EventSystems_AxisEventData_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.EventSystems.AxisEventData param0)
+		{
+			func.BeginPCall();
+			func.PushObject(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.EventSystems.AxisEventData param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushObject(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<UnityEngine.EventSystems.AxisEventData> System_Action_UnityEngine_EventSystems_AxisEventData(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UnityEngine.EventSystems.AxisEventData> fn = delegate(UnityEngine.EventSystems.AxisEventData param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_UnityEngine_EventSystems_AxisEventData_Event target = new System_Action_UnityEngine_EventSystems_AxisEventData_Event(func);
+			System.Action<UnityEngine.EventSystems.AxisEventData> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_UnityEngine_EventSystems_AxisEventData_Event target = new System_Action_UnityEngine_EventSystems_AxisEventData_Event(func, self);
+			System.Action<UnityEngine.EventSystems.AxisEventData> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_UnityEngine_EventSystems_AxisEventData(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.EventSystems.AxisEventData>), L, pos);
+	}
+
+	void Push_System_Action_UnityEngine_EventSystems_AxisEventData(IntPtr L, System.Action<UnityEngine.EventSystems.AxisEventData> o)
 	{
 		ToLua.Push(L, o);
 	}

@@ -205,7 +205,7 @@ namespace UnityEditor.UI
         [MenuItem("Assets/UI/创建一个UI模块", false, 1)]
         public static void CreateModule(MenuCommand menuCommand)
         {
-            string path = "Assets/Res_F1/Prefabs/UI/PanelCanvas.prefab";
+            string path = "Assets/Resources/UI/PanelCanvas.prefab";
             var select = Selection.activeObject;
             var isPath = AssetDatabase.GetAssetPath(select);
             if (!string.IsNullOrEmpty(isPath) && !Path.HasExtension(isPath))
@@ -214,7 +214,7 @@ namespace UnityEditor.UI
             }
             var parent = new GameObject("Root", typeof(Canvas));
 
-            var go = new GameObject("PanelCanvas", typeof(Canvas), typeof(GraphicRaycaster))//,typeof(UIKit.LuaModule)
+            var go = new GameObject("PanelCanvas", typeof(Canvas), typeof(GraphicRaycaster),typeof(UIKit.LuaModule))//
             {
                 layer = LayerMask.NameToLayer("UI")
             };
@@ -225,7 +225,7 @@ namespace UnityEditor.UI
             rect.sizeDelta = Vector2.zero;
             rect.pivot = new Vector2(0.5f,0.5f);
             
-            Canvas canvas = go.GetComponent<Canvas>();
+            var canvas = go.GetComponent<Canvas>();
             canvas.overrideSorting = true;
             canvas.sortingLayerName = "UI";
 
@@ -233,13 +233,13 @@ namespace UnityEditor.UI
             bg.transform.parent = go.transform;
             bg.name = "bg";
             bg.GetComponent<RawImage>().raycastTarget = false;
-            RectTransform rectBg = bg.GetComponent<RectTransform>();
+            var rectBg = bg.GetComponent<RectTransform>();
             rectBg.anchorMin = Vector2.zero;
             rectBg.anchorMax = Vector2.one;
             rectBg.sizeDelta = Vector2.zero;
             rectBg.pivot = new Vector2(0.5f,0.5f);
             
-            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(go,path);
+            var prefab = PrefabUtility.SaveAsPrefabAsset(go,path);
             Object.DestroyImmediate(go);
             Object.DestroyImmediate(parent);
             AssetDatabase.Refresh();

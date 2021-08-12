@@ -41,7 +41,7 @@ namespace UIKit
             //设置进池子里面
             module.transform.SetParent(this.transform);
             module.layer = this.gameObject.layer;
-            // module.GetComponent<LuaModule>().enabled = false;
+            module.GetComponent<LuaModule>().enabled = false;
             _cache.Add(id, module);
         }
 
@@ -54,7 +54,7 @@ namespace UIKit
             module.transform.SetParent(parent);
             module.layer = parent.gameObject.layer;
             module.GetComponent<RectTransform>().localScale = Vector3.one;
-            // module.GetComponent<LuaModule>().enabled = true;
+            module.GetComponent<LuaModule>().enabled = true;
             _cache.RemoveByKey(id);
             return module;
         }
