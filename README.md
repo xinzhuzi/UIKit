@@ -13,11 +13,11 @@
 
 * 3. 先将设置 UI 环境,在 Project Settings的 Editor 选项中,将 Editing Environments 中的 UIEnvironment 设置为 UIEditorScene.      
 
-Sprite Packer 选择 Sprite Atlas V2即可.         
+     Sprite Packer 选择 Sprite Atlas V2即可.         
 
-添加 Layer --> NoGraphics.      
+     添加 Layer --> NoGraphics.添加 GM 的 Tag 选项.  
 
-在 Package Manager 中添加 2D Sprite 插件
+     在 Package Manager 中添加 2D Sprite 插件
 
 * 4. 没有 AB 加载模块,借助 toLua 框架,所有的 UI 都从 Resources 文件夹下模拟加载,如有需求,请自行编写.
 
@@ -33,5 +33,6 @@ Sprite Packer 选择 Sprite Atlas V2即可.
 
 * 10. 如果想要特殊效果,请参考 https://github.com/mob-sakai 此人仓库.
 
+* 11. 自动化编写 Lua 代码,以 MVC 模式生成 3 个脚本, 在 prefab 上面右键 UI/模块/2. 模板-->MVC-->Lua,即可生成,此生成是在没有 lua 脚本时的生成,如果有存在 lua 脚本不会生成.
 
-* 11. 感谢支持
+* 12. 感谢支持

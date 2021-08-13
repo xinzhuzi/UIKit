@@ -10,6 +10,7 @@ local _controller = nil -- 控制器
 function this:initModel()
     _controller = lua_data_center.Get("main_page")
 
+    this:refreshModel()
 end
 
 

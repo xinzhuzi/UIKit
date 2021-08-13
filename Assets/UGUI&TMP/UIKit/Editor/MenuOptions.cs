@@ -201,63 +201,6 @@ namespace UnityEditor.UI
         //     t.raycastTarget = false;
         // }
 
-        [MenuItem("GameObject/UI/创建一个UI模块", false, 2000)]
-        [MenuItem("Assets/UI/创建一个UI模块", false, 1)]
-        public static void CreateModule(MenuCommand menuCommand)
-        {
-            string path = "Assets/Resources/UI/PanelCanvas.prefab";
-            var select = Selection.activeObject;
-            var isPath = AssetDatabase.GetAssetPath(select);
-            if (!string.IsNullOrEmpty(isPath) && !Path.HasExtension(isPath))
-            {
-                path = isPath + "/PanelCanvas.prefab";
-            }
-            var parent = new GameObject("Root", typeof(Canvas));
-
-            var go = new GameObject("PanelCanvas", typeof(Canvas), typeof(GraphicRaycaster),typeof(UIKit.LuaModule))//
-            {
-                layer = LayerMask.NameToLayer("UI")
-            };
-            go.transform.SetParent(parent.transform);
-            var rect = go.GetComponent<RectTransform>();
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.sizeDelta = Vector2.zero;
-            rect.pivot = new Vector2(0.5f,0.5f);
-            
-            var canvas = go.GetComponent<Canvas>();
-            canvas.overrideSorting = true;
-            canvas.sortingLayerName = "UI";
-
-            var bg = DefaultControls.CreateRawImage(GetStandardResources());
-            bg.transform.parent = go.transform;
-            bg.name = "bg";
-            bg.GetComponent<RawImage>().raycastTarget = false;
-            var rectBg = bg.GetComponent<RectTransform>();
-            rectBg.anchorMin = Vector2.zero;
-            rectBg.anchorMax = Vector2.one;
-            rectBg.sizeDelta = Vector2.zero;
-            rectBg.pivot = new Vector2(0.5f,0.5f);
-            
-            var prefab = PrefabUtility.SaveAsPrefabAsset(go,path);
-            Object.DestroyImmediate(go);
-            Object.DestroyImmediate(parent);
-            AssetDatabase.Refresh();
-            AssetDatabase.OpenAsset(prefab);
-            
-            var windowType = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneView");
-            var sceneView = EditorWindow.GetWindow(windowType) as UnityEditor.SceneView;
-            if (sceneView == null)return;
-            sceneView.drawGizmos = true;
-            sceneView.in2DMode = true;
-            sceneView.cameraMode = new SceneView.CameraMode()
-            {
-                drawMode=DrawCameraMode.Textured,
-                name = "Shaded",
-                section = "Shading Mode",
-            };
-        }
-
         [MenuItem("GameObject/UI/Image", false, 2000)]
         public static void AddImage(MenuCommand menuCommand)
         {
@@ -300,14 +243,14 @@ namespace UnityEditor.UI
         // Button and toggle are controls you just click on.
 
         //单纯为了接收点击事件
-        [MenuItem("GameObject/UI/Empty4Raycast (降低 OverDraw)", false, 2029)]
+        [MenuItem("GameObject/UI/Empty4Raycast", false, 2029)]
         public static void AddEmpty4Raycast(MenuCommand menuCommand)
         {
             GameObject go;
             using (new FactorySwapToEditor())
                 go = DefaultControls.CreateImage(GetStandardResources());
             PlaceUIElementRoot(go, menuCommand);
-            GameObject.DestroyImmediate(go.GetComponent<Image>());
+            UnityEngine.Object.DestroyImmediate(go.GetComponent<Image>());
             go.AddComponent<UIEmpty4Raycast>().raycastTarget = true;
             go.name = "Empty4Raycast";
             SetPosition(go);
