@@ -8,7 +8,6 @@ public class UnityEngine_UI_UITableCellWrap
 	{
 		L.BeginClass(typeof(UnityEngine.UI.UITableCell), typeof(UnityEngine.MonoBehaviour));
 		L.RegFunction("UpdateCell", UpdateCell);
-		L.RegFunction("AutoGet", AutoGet);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
 		L.RegVar("Id", get_Id, set_Id);
@@ -27,22 +26,6 @@ public class UnityEngine_UI_UITableCellWrap
 			UnityEngine.UI.UITableCell obj = (UnityEngine.UI.UITableCell)ToLua.CheckObject<UnityEngine.UI.UITableCell>(L, 1);
 			int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 			obj.UpdateCell(arg0);
-			return 0;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int AutoGet(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 1);
-			UnityEngine.UI.UITableCell obj = (UnityEngine.UI.UITableCell)ToLua.CheckObject<UnityEngine.UI.UITableCell>(L, 1);
-			obj.AutoGet();
 			return 0;
 		}
 		catch (Exception e)

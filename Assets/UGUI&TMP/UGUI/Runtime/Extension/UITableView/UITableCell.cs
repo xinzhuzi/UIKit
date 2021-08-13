@@ -41,8 +41,7 @@ namespace UnityEngine.UI
         
         
 #if UNITY_EDITOR
-        [ContextMenu("自动获取")]
-        public void AutoGet()
+        private void Reset()
         {
             rectTransform = this.GetComponent<RectTransform>();
             element = this.GetComponent<LayoutElement>();

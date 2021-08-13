@@ -1008,9 +1008,6 @@ namespace UnityEngine.UI
             
             //Cell 模板 
             var tableCell = CreateUIObject("CellTemplate", UICellPool,typeof(UITableCell),typeof(Image));
-#if UNITY_EDITOR
-            tableCell.GetComponent<UITableCell>().AutoGet();
-#endif
             var element = tableCell.GetComponent<LayoutElement>();
             element.layoutPriority = 1;
             element.preferredHeight = 200;
