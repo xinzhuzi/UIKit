@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor.U2D;
@@ -13,22 +14,28 @@ namespace UnityEditor.UI
         [MenuItem("Assets/UI/创建或者更新 SpriteAtlas", false, 1)]
         public static void CreateSpriteAtlas(MenuCommand menuCommand)
         {
+            var suffix = ".spriteatlas";
+#if !UNITY_2019_4
+            if (EditorSettings.spritePackerMode == SpritePackerMode.SpriteAtlasV2) suffix = ".spriteatlasv2";
+#endif
             var select = Selection.activeObject;
             var dirPath = AssetDatabase.GetAssetPath(select);
-            dirPath = dirPath.Replace("\\","/");
+            dirPath = dirPath.Replace("\\", "/");
             if (string.IsNullOrEmpty(dirPath) || Path.HasExtension(dirPath))
             {
                 Debug.LogError("不是文件夹,无法打包");
                 return;
             }
 
-            var spriteAtlas
 #if !UNITY_2019_4
-            = new SpriteAtlasAsset();
+            var spriteAtlas = new SpriteAtlasAsset();
 #else
-             = new SpriteAtlas();
+            var spriteAtlas = new SpriteAtlas();
 #endif
-            SpriteAtlasPackingSettings packSetting = new SpriteAtlasPackingSettings()
+
+
+            spriteAtlas.SetIncludeInBuild(false);
+            var packSetting = new SpriteAtlasPackingSettings()
             {
                 blockOffset = 1,
                 enableRotation = false,
@@ -37,7 +44,7 @@ namespace UnityEditor.UI
             };
             spriteAtlas.SetPackingSettings(packSetting);
 
-            SpriteAtlasTextureSettings textureSetting = new SpriteAtlasTextureSettings()
+            var textureSetting = new SpriteAtlasTextureSettings()
             {
                 readable = false,
                 generateMipMaps = false,
@@ -46,7 +53,7 @@ namespace UnityEditor.UI
             };
             spriteAtlas.SetTextureSettings(textureSetting);
 
-            TextureImporterPlatformSettings platformSetting = new TextureImporterPlatformSettings()
+            var platformSetting = new TextureImporterPlatformSettings()
             {
                 maxTextureSize = 2048,
                 format = TextureImporterFormat.Automatic,
@@ -55,47 +62,43 @@ namespace UnityEditor.UI
                 compressionQuality = 50,
             };
             spriteAtlas.SetPlatformSettings(platformSetting);
-            
-            DirectoryInfo dir = new DirectoryInfo(dirPath);
-            foreach (FileInfo file in dir.GetFiles())
+
+            var dir = new DirectoryInfo(dirPath);
+            var sprites = new List<Object>();
+            foreach (var file in dir.GetFiles())
             {
-                if (file.Name.Contains(".meta"))continue;
-                Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>($"{dirPath}/{file.Name}");
+                if (file.Name.Contains(".meta")) continue;
+                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>($"{dirPath}/{file.Name}");
                 if (sprite.texture.texelSize.x >= 1024)
                 {
-                    Debug.LogWarning(sprite.name +" 的宽度大于 1024,请确定此图是否需要打入图集中,或让美术重新制作");
+                    Debug.LogWarning(sprite.name + " 的宽度大于 1024,请确定此图是否需要打入图集中,或让美术重新制作");
                 }
+
                 if (sprite.texture.texelSize.y >= 1024)
                 {
-                    Debug.LogWarning(sprite.name +" 的高度大于 1024,请确定此图是否需要打入图集中,或让美术重新制作");
+                    Debug.LogWarning(sprite.name + " 的高度大于 1024,请确定此图是否需要打入图集中,或让美术重新制作");
                 }
+
                 if (sprite.texture.texelSize.x % 2 != 0)
                 {
-                    Debug.LogWarning(sprite.name +" 的宽度不是 2 的倍数,请让美术重新制作");
+                    Debug.LogWarning(sprite.name + " 的宽度不是 2 的倍数,请让美术重新制作");
                 }
+
                 if (sprite.texture.texelSize.y % 2 != 0)
                 {
-                    Debug.LogWarning(sprite.name +" 的高度不是 2 的倍数,请让美术重新制作");
+                    Debug.LogWarning(sprite.name + " 的高度不是 2 的倍数,请让美术重新制作");
                 }
-                spriteAtlas.Add(new[] {sprite});
-            } 
-            
-            string suffix = ".spriteatlas";
-#if !UNITY_2019_4
-            if (EditorSettings.spritePackerMode == SpritePackerMode.SpriteAtlasV2) suffix = ".spriteatlasv2";
-#endif
-            if (Directory.Exists(SavePath))
-            {
-                SavePath += dirPath.Split('/').Last();
+
+                sprites.Add(sprite);
             }
-            else
-            {
-                SavePath = dirPath;
-            }
-            AssetDatabase.CreateAsset(spriteAtlas, SavePath + suffix);
+            spriteAtlas.Add(sprites.ToArray());
+
+
+            AssetDatabase.CreateAsset(spriteAtlas, SavePath + select.name + suffix);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            Selection.activeObject = AssetDatabase.LoadAssetAtPath(SavePath + suffix, typeof(Object));
+            SpriteAtlasUtility.PackAllAtlases(EditorUserBuildSettings.activeBuildTarget, false);
+            Selection.activeObject = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(SavePath + select.name + suffix);
             EditorUtility.FocusProjectWindow();
         }
     }
