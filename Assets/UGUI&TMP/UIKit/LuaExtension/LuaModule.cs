@@ -14,23 +14,40 @@ namespace UIKit
             _luaState = LuaClient.GetMainState();
             string path = LuaHelper.QueryLuaFullFileName(this.name.Replace("(Clone)", ""));
             _luaTableModule = _luaState?.Require<LuaTable>(path);
-            if (null == _luaTableModule) return;
+             if (null == _luaTableModule) return;
             _luaTableModule["gameObject"] = gameObject;
             _luaTableModule["transform"] = transform;
-            ExecuteLuaTableFunction("Awake");
+            InvokeLuaTableFunction("Awake");
         }
         
-        private void OnEnable() => ExecuteLuaTableFunction("OnEnable");
+        protected virtual void OnEnable() => InvokeLuaTableFunction("OnEnable");
 
-        private void Start() => ExecuteLuaTableFunction("Start");
+        protected virtual void Start() => InvokeLuaTableFunction("Start");
         
         //Update,这个地方不采取这种方式调用,请使用 UpdateBeat 中的方式调用
         
-        private void OnDisable() => ExecuteLuaTableFunction("OnDisable");
+        protected virtual void OnDisable() => InvokeLuaTableFunction("OnDisable");
 
-        private void OnDestroy() => ExecuteLuaTableFunction("OnDestroy");
+        protected virtual void OnDestroy()
+        {
+            InvokeLuaTableFunction("OnDestroy");
+            _luaTableModule.Dispose();
+        }
         
-        private void ExecuteLuaTableFunction(string funcName)
+        /// <summary>
+        /// 获取当前的 table 表,根据表的方法进行调用
+        /// </summary>
+        /// <returns></returns>
+        public LuaTable QueryLuaTable()
+        {
+            return _luaTableModule;
+        }
+        
+        /// <summary>
+        /// 单纯的执行方法
+        /// </summary>
+        /// <param name="funcName"></param>
+        public virtual void InvokeLuaTableFunction(string funcName)
         {
             if (null == _luaState) return;
             var func = _luaTableModule?.GetLuaFunction(funcName);
