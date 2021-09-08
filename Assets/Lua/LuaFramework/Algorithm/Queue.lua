@@ -1,68 +1,81 @@
-Queue = {}
-Queue.__index = Queue
+_G.Queue = class("Queue")
 
-function Queue.New()
-    local self = {}
-    self.queue = {}
-    self.size = 0
-    self.first = nil
-    self.last = nil
-    setmetatable(self,Queue)
-    return self
+--初始化
+function Queue:initialize(name)
+    self.name = name
+    self.last = 0 ---数据末尾
+    self.first = 1 ---数据开头
+    self.length = 0 ---数据长度
+    self.data = {nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,} ---数据容器,使用数组实现,不使用链表实现
 end
 
-function Queue:isEmpty()
-    if self.size == 0 and self.first == nil and self.last == nil then
-        return true
+--有多少个数据
+function Queue:Count()
+    return self.length
+end
+
+--清空
+function Queue:Clear()
+    self.data = nil
+    self.length = nil
+    self.name = nil
+    self.first = nil
+    collectgarbage("collect")
+end
+
+--压入数据
+function Queue:Enqueue(value)
+    self.length = self.length + 1
+    self.last = self.last + 1
+    self.data[self.last] = value
+end
+
+--弹出数据
+function Queue:Dequeue()
+    if self.length <= 0 then
+        error("Queue is empty")
+    end
+    local firstValue = self.data[self.first]
+    self.length = self.length - 1
+    self.first = self.first + 1
+    if self.length <= 0 then
+        self.last = -1 ---数据末尾
+        self.first = 0 ---数据开头
+        self.length = 0 ---数据长度
+        ---数据容器,使用数组实现,不使用链表实现
+        self.data = {nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,}
+        collectgarbage("collect")
+    end
+    return firstValue
+end
+
+--查看队列首端的值
+function Queue:Peek()
+    if self.length <= 0 then
+        error("Stack is empty")
+    end
+    return self.data[self.first]
+end
+
+--包含某个值
+function Queue:Contains(value)
+    for i = self.first, self.first + self.length+1 do
+        if value == self.data[i] then
+            return true
+        end
     end
     return false
 end
 
-function Queue:pushFirst(data)
-    local lst = {}
-    lst.pre = nil
-    lst.value = data
-    lst.next = nil
-    if self.first == nil then
-        self.first = lst
-        self.last = lst
-    else
-        lst.next = self.first
-        self.first.pre = lst
-        self.first = lst
-    end
-    self.size = self.size + 1
-end
 
-function Queue:popLast()
-    if self:isEmpty() then
-        print("Error: Queue is empty!")
-        return
-    end
-    local popData = self.last
-    local temp = popData.pre
-    if temp then
-        temp.next = nil
-        self.last = temp
-    else
-        self.last = nil
-        self.first = nil
-    end
-    self.size = self.size -1
-    return popData
-end
 
-function Queue:printElement()
-    local temp = self.first
-    if not temp then
-        print("Queue is empty")
-        return
-    end
-    local str = "{"
-    while temp do
-        str = str..temp.value..", "
-        temp = temp.next
-    end
-    str = str.."}"
-    print(str)
+
+--[[
+队列用法:
+local myQueue = Queue:new("Queue的名字",10) //创建了一个 queue 对象
+myQueue:Enqueue(value)
+myQueue:Dequeue()
+if _queueMessage:Count() <= 0 then
 end
+]]--
+

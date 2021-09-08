@@ -9,12 +9,13 @@ namespace UnityEditor.UI
 {
     public static class MenuSpriteAtlas
     {
-        private static string SavePath = "Assets/Editor Default Resources/SpriteAtlas/";
+        private static string SavePath = "";
         
         [MenuItem("Assets/UI/创建或者更新 SpriteAtlas", false, 1)]
         public static void CreateSpriteAtlas(MenuCommand menuCommand)
         {
-            var suffix = ".spriteatlas";
+            SavePath = "Assets/RAW/f1_ui/atlas/";
+             var suffix = ".spriteatlas";
 #if !UNITY_2019_4
             if (EditorSettings.spritePackerMode == SpritePackerMode.SpriteAtlasV2) suffix = ".spriteatlasv2";
 #endif
@@ -26,6 +27,7 @@ namespace UnityEditor.UI
                 Debug.LogError("不是文件夹,无法打包");
                 return;
             }
+
 
 #if !UNITY_2019_4
             var spriteAtlas = new SpriteAtlasAsset();

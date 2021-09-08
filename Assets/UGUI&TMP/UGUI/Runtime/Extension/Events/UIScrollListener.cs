@@ -13,7 +13,7 @@ namespace UnityEngine.UI
     {
         public Action<PointerEventData> onScroll; //点击
         
-        public static UIScrollListener Get(RectTransform t)
+        public static UIScrollListener Get(Transform t)
         {
             return Get(t.gameObject);
         }

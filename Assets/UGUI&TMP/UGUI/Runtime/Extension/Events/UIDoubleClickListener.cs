@@ -16,7 +16,7 @@ namespace UnityEngine.UI
         
         public Action<PointerEventData> onDoubleClick; //双击
         
-        public static UIDoubleClickListener Get(RectTransform t)
+        public static UIDoubleClickListener Get(Transform t)
         {
             return Get(t.gameObject);
         }

@@ -54,7 +54,7 @@ namespace UnityEngine.UI
         public Action<BaseEventData> onCancel;
 
         
-        public static UIEventListener Get(RectTransform t)
+        public static UIEventListener Get(Transform t)
         {
             return Get(t.gameObject);
         }

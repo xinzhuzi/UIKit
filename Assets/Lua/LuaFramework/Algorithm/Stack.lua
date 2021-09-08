@@ -1,96 +1,74 @@
-Stack = {}
-Stack.__index = Stack
+_G.Stack = class("Stack")
 
-function Stack.New()
-    local self = {}
-    self.stack_table = {}
-    setmetatable(self,Stack)
-    return self
+--初始化
+function Stack:initialize(name)
+    self.name = name
+    self.length = 0 ---数据长度,当数据为 0 时,弹空了栈
+    self.data = {nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,}---数据容器,使用数组实现,不使用链表实现
 end
 
-function Stack:push(element)
-    local size = self:size()
-    self.stack_table[size+1] = element
+--有多少个数据
+function Stack:Count()
+    return self.length
 end
 
-function Stack:pop()   
-    local size = self:size()
-    if self:isEmpty() then
-        print("Error:Stack is empty!")
-        return nil
+--清空
+function Stack:Clear()
+    self.data = nil
+    self.length = nil
+    self.name = nil
+    collectgarbage("collect")
+end
+
+--弹出数据
+function Stack:Pop()
+    if self.length <= 0 then
+        error("Stack is empty")
     end
-    return table.remove(self.stack_table,size)
+    local firstValue = self.data[self.length]
+    self.data[self.length] = nil
+    self.length = self.length - 1
+    if self.length <= 0 then
+        self.length = 0
+        self.data = {nil,nil,nil,nil,nil,nil,nil,nil,nil,nil,}---数据容器,使用数组实现,不使用链表实现
+        collectgarbage("collect")
+    end
+    return firstValue
 end
 
-function Stack:peek()   
-    local size = self:size()
-    if self:isEmpty() then
-        print("Error:Stack is Empty")
-        return nil
+--查看队列首端的值
+function Stack:Peek()
+    if self.length <= 0 then
+        error("Stack is empty")
     end
-    return self.stack_table[size]
+    return self.data[self.length]
 end
 
-function Stack:isEmpty()
-    local size = self:size()
-    if size == 0 then
-        return true
-    end
-    return false
+--压入数据
+function Stack:Push(value)
+    self.length = self.length + 1
+    self.data[self.length] = value
 end
 
-function Stack:size()    
-    return #self.stack_table or 0
-end
-
-function Stack:clear()
-    self.stack_table = nil
-    self.stack_table = {}
-end
-
-function Stack:printElement()
-    local size = self:size()
-    if self:isEmpty() then
-        print("Error: Stack is empty!")
-        return
-    end
-    local str = "{"..self.stack_table[size]
-    size = size -1
-    while size > 0 do
-        str = str .. ", "..self.stack_table[size]
-        size = size - 1
-    end
-    str = str .. "}"
-    print(str)
-end
-
---移除栈中的某个元素
-function Stack:RemoveElementFromStack(element)
-    if self:isEmpty() then
-        print("Error: Stack is empty!")
-        return
-    end
-    local size = self:size()
-    for i = 1, size do
-        if self.stack_table[i] == element then
-            table.remove(self.stack_table,i)
-            break
-        end
-    end
-    
-end
-
---判断栈中是否存在某个元素
-function Stack:IsExistElement(element)
-    if self:isEmpty() then
-        print("Error: Stack is empty!")
-        return
-    end
-    local size = self:size()
-    for i = 1, size do
-        if self.stack_table[i] == element then
-           return true
+--包含某个值
+function Stack:Contains(value)
+    for i = 1, self.length do
+        if value == self.data[i] then
+            return true
         end
     end
     return false
 end
+
+
+
+
+--[[
+队列用法:
+local myStack = Stack:new("Stack的名字") //创建了一个 Stack 对象
+myStack:Push(value)
+myStack:Pop()
+if _stackMessage:Count() <= 0 then 
+ 
+end
+]]--

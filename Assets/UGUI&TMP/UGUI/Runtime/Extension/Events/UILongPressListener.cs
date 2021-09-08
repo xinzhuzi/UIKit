@@ -15,7 +15,7 @@ namespace UnityEngine.UI
         
         public Action<PointerEventData> onLongPress;
         
-        public static UILongPressListener Get(RectTransform t)
+        public static UILongPressListener Get(Transform t)
         {
             return Get(t.gameObject);
         }

@@ -22,7 +22,7 @@ namespace UnityEngine.UI
         private bool m_IsPressed = false;
 
 
-        public static UIPointAllListener Get(RectTransform t)
+        public static UIPointAllListener Get(Transform t)
         {
             return Get(t.gameObject);
         }

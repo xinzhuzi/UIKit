@@ -14,6 +14,8 @@ namespace UnityEditor.UI
         private static int currentState;//当前状态, 1 表示展示出了图集窗口,2 表示展示出了图集中的精灵窗口,3 表示彻底关闭,每次进入从 1 开始
 
         public static Action<Sprite> OnSelectedSprite;
+
+        public static Action<SpriteAtlas> OnSelectedSpriteAtlas;
         
         public static void ShowSpriteAtlasWindow()
         {
@@ -34,6 +36,7 @@ namespace UnityEditor.UI
                 {
                     Object selected = EditorGUIUtility.GetObjectPickerObject();
                     _spriteAtlas = selected as SpriteAtlas;
+                    OnSelectedSpriteAtlas?.Invoke(_spriteAtlas);
                 }
                 else if (currentID == 0 && currentID != controlID)//当前的图集窗口已经关闭了,需要展示出来图集精灵窗口了,状态1 结束,当前状态切换为 2
                 {

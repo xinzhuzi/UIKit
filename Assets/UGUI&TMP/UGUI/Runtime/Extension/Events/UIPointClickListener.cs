@@ -13,7 +13,7 @@ namespace UnityEngine.UI
     {
         public Action<PointerEventData> onClick; //点击
 
-        public static UIPointClickListener Get(RectTransform t)
+        public static UIPointClickListener Get(Transform t)
         {
             return Get(t.gameObject);
         }

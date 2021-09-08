@@ -12,7 +12,7 @@ namespace UnityEngine.UI
         public Action<PointerEventData> onDrag; //正在拖拽中
         public Action<PointerEventData> onEndDrag; //结束拖拽
 
-        public static UIDragListener Get(RectTransform t)
+        public static UIDragListener Get(Transform t)
         {
             return Get(t.gameObject);
         }
