@@ -14,7 +14,7 @@ namespace UnityEditor.UI
         [MenuItem("Assets/UI/创建或者更新 SpriteAtlas", false, 1)]
         public static void CreateSpriteAtlas(MenuCommand menuCommand)
         {
-            SavePath = "Assets/RAW/f1_ui/atlas/";
+            SavePath = "Assets/Resources/";
              var suffix = ".spriteatlas";
 #if !UNITY_2019_4
             if (EditorSettings.spritePackerMode == SpritePackerMode.SpriteAtlasV2) suffix = ".spriteatlasv2";
@@ -28,11 +28,29 @@ namespace UnityEditor.UI
                 return;
             }
 
-
+            var isHave = false;
+            Object[] haves = null;
 #if !UNITY_2019_4
-            var spriteAtlas = new SpriteAtlasAsset();
+            var spriteAtlas = AssetDatabase.LoadAssetAtPath<SpriteAtlasAsset>(SavePath + select.name + suffix);
+            if (spriteAtlas == null)
+            {
+                spriteAtlas = new SpriteAtlasAsset();
+            }
+            else
+            {
+                isHave = true;
+            }
 #else
-            var spriteAtlas = new SpriteAtlas();
+            var spriteAtlas = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(SavePath + select.name + suffix);
+            if (spriteAtlas == null)
+            {
+                spriteAtlas = new SpriteAtlas();
+            }
+            else
+            {
+                isHave = true;
+            }
+            haves = spriteAtlas.GetPackables();
 #endif
 
 
@@ -91,12 +109,12 @@ namespace UnityEditor.UI
                     Debug.LogWarning(sprite.name + " 的高度不是 2 的倍数,请让美术重新制作");
                 }
 
+                if (haves != null && haves.Contains(sprite)) continue;
                 sprites.Add(sprite);
             }
             spriteAtlas.Add(sprites.ToArray());
 
-
-            AssetDatabase.CreateAsset(spriteAtlas, SavePath + select.name + suffix);
+            if (!isHave) AssetDatabase.CreateAsset(spriteAtlas, SavePath + select.name + suffix);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             SpriteAtlasUtility.PackAllAtlases(EditorUserBuildSettings.activeBuildTarget, false);
