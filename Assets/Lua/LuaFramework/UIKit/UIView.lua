@@ -50,17 +50,18 @@ function this:initialize()
 end
 
 function this:refresh()
-    if self.controller == nil then return end
+    local controller = lua_data_center.Get(string.sub(self["name"], 1, -6))
+    if controller == nil then return end
     self:refreshView()
 end
 
 
 function this:reset()
-    if self.controller == nil then return end
+    local controller = lua_data_center.Get(string.sub(self["name"], 1, -6))
+    if controller == nil then return end
     self:resetView()
 end
 
 function this:destroy()
     self:destroyView()
-    self.controller = nil
 end 

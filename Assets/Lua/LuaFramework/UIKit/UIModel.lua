@@ -47,13 +47,15 @@ function this:initialize()
 end
 
 function this:refresh()
-    if self.controller == nil then return end
+    local controller = lua_data_center.Get(string.sub(self["name"], 1, -7))
+    if controller == nil then return end
     self:refreshModel()
 end
 
 
 function this:reset()
-    if self.controller == nil then return end
+    local controller = lua_data_center.Get(string.sub(self["name"], 1, -7))
+    if controller == nil then return end
     self:resetModel()
 end
 
