@@ -39,7 +39,7 @@ end
 
 
 --数据模块销毁
-function this:destroyView()
+function this:destroyModel()
 
     this.data = nil
 
