@@ -409,7 +409,7 @@ namespace UIKit
             
             luaSB.Append("\n\n\n");
             luaSB.Append("--数据模块销毁\n");
-            luaSB.Append("function this:destroyView()\n\n");
+            luaSB.Append("function this:destroyModel()\n\n");
             luaSB.Append("    this.data = nil\n\n");
             luaSB.Append("    _controller = nil\n\n");
             luaSB.Append("end\n");
