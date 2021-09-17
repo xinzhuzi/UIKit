@@ -114,7 +114,10 @@ namespace UnityEditor.UI
             }
             spriteAtlas.Add(sprites.ToArray());
 
-            if (!isHave) AssetDatabase.CreateAsset(spriteAtlas, SavePath + select.name + suffix);
+            var atlasPath = SavePath + select.name + suffix;
+            var abName = AssetImporter.GetAtPath(atlasPath)?.assetBundleName;
+            AssetDatabase.CreateAsset(spriteAtlas, atlasPath);
+            AssetImporter.GetAtPath(atlasPath).assetBundleName = abName;
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             SpriteAtlasUtility.PackAllAtlases(EditorUserBuildSettings.activeBuildTarget, false);
