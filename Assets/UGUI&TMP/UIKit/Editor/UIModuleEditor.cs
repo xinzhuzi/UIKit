@@ -14,22 +14,20 @@ namespace UIKit
     {
         [MenuItem("GameObject/UI/模块/1. 创建一个Prefab模板", false, 1999)]
         [MenuItem("Assets/UI/模块/1. 创建一个Prefab模板", false, 1)]
-        public static void CreateModule(MenuCommand menuCommand)
+        public static string CreateModule()
         {
-            string path = "Assets/Resources/UI/PanelCanvas.prefab";
+            var path = "Assets/Resources/UI/PanelCanvas.prefab";
             var select = Selection.activeObject;
             var isPath = AssetDatabase.GetAssetPath(select);
             if (!string.IsNullOrEmpty(isPath) && !Path.HasExtension(isPath))
             {
                 path = isPath + "/PanelCanvas.prefab";
             }
-            var parent = new GameObject("Root", typeof(Canvas));
 
             var go = new GameObject("PanelCanvas", typeof(Canvas), typeof(GraphicRaycaster),typeof(UIKit.LuaModule))//
             {
                 layer = LayerMask.NameToLayer("UI")
             };
-            go.transform.SetParent(parent.transform);
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
@@ -52,13 +50,12 @@ namespace UIKit
             
             var prefab = PrefabUtility.SaveAsPrefabAsset(go,path);
             Object.DestroyImmediate(go);
-            Object.DestroyImmediate(parent);
             AssetDatabase.Refresh();
             AssetDatabase.OpenAsset(prefab);
             
             var windowType = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneView");
             var sceneView = EditorWindow.GetWindow(windowType) as UnityEditor.SceneView;
-            if (sceneView == null)return;
+            if (sceneView == null)return path;
             sceneView.drawGizmos = true;
             sceneView.in2DMode = true;
             sceneView.cameraMode = new SceneView.CameraMode()
@@ -67,6 +64,7 @@ namespace UIKit
                 name = "Shaded",
                 section = "Shading Mode",
             };
+            return path;
         }
         
         [MenuItem("Assets/UI/模块/2. 模板-->MVC-->Lua",false,1)]

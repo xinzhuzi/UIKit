@@ -8,48 +8,91 @@ namespace UIKit
 {
     public static class UIHelper
     {
-        #region 加载
+        #region 加载卸载
        
         public const string PrefabPath = "UI/";
         
         //Load 完毕之后还是一个解压的内存块,类似一个模板,不能直接使用,是被缓存的,需要实例化.
         public static UnityEngine.Object Load(string path)
         {
-            return Resources.Load(PrefabPath+path);
+            return Resources.Load(PrefabPath + path);
         }
 
         //创建是在 Load 之后进行实例化,可以直接使用,需要使用 UIManager.Instance:Open("xxx");才能正常显示
-        public static UnityEngine.Object Create(string path)
+        public static UnityEngine.Object Create(string path, bool isManualUnLoad)
         {
-            return UnityEngine.Object.Instantiate(Resources.Load(PrefabPath+path));
+            return UnityEngine.Object.Instantiate(Resources.Load(PrefabPath + path));
         }
 
         public static void LoadAsync(string path, Action<UnityEngine.Object> action)
         {
-            
+            // AB.LoadAsync<GameObject>(PrefabPath + path, (state) =>
+            // {
+            //     // GameObject go = UnityEngine.Object.Instantiate(state.asset) as GameObject;
+            //     action?.Invoke(state.asset);
+            // }, AB.ELOADTIME.UI);
         }
 
 
         //创建是在 Load 之后进行实例化,可以直接使用,需要使用 UIManager.Instance:Open("xxx");才能正常显示
         public static void CreateAsync(string path, Action<UnityEngine.GameObject> action)
         {
-           
+            // AB.LoadAsync<GameObject>(PrefabPath + path, (state) =>
+            // {
+            //     GameObject go = UnityEngine.Object.Instantiate(state.asset) as GameObject;
+            //     action?.Invoke(go);
+            // }, AB.ELOADTIME.UI);
+        }
+
+        public static SpriteAtlas GetSpriteAtlas(string spriteAtlasName)
+        {
+            return null;
+        }
+
+
+        public static void GetSpriteAtlasAsync(string spriteAtlasName ,
+            Action<SpriteAtlas> action)
+        {
+            // AB.LoadAsync<SpriteAtlas>(spriteAtlasName, (state) =>
+            // {
+            //     var spriteAtlas = state.asset as SpriteAtlas;
+            //     if (spriteAtlas == null)
+            //     {
+            //         throw new Exception("加载图集错误,spriteAtlasName:" + spriteAtlasName);
+            //     }
+            //     action?.Invoke(spriteAtlas);
+            // }, AB.ELOADTIME.UI);
         }
 
         public static Sprite GetSprite(string spriteAtlasName, string spriteName)
         {
-            return Resources.Load<SpriteAtlas>(spriteAtlasName).GetSprite(spriteName);
+            return GetSpriteAtlas(spriteAtlasName)?.GetSprite(spriteName);
         }
-        
+
+
         public static void GetSpriteAsync(string spriteAtlasName, string spriteName, Action<Sprite> action)
         {
-            
+            // AB.LoadAsync<SpriteAtlas>(spriteAtlasName, (state) =>
+            // {
+            //     var spriteAtlas = state.asset as SpriteAtlas;
+            //     if (spriteAtlas == null)
+            //     {
+            //         throw new Exception("加载图集错误,spriteAtlasName:" + spriteAtlasName + "     spriteName:" + spriteName);
+            //     }
+            //     action?.Invoke(spriteAtlas.GetSprite(spriteName));
+            // }, AB.ELOADTIME.UI);
         }
-        
+
+
+        public static void Unload(string path)
+        {
+            // AB.UnLoad(PrefabPath + path, AB.ELOADTIME.UI);
+        }
+
         #endregion
 
         #region 给父节点添加一个子节点
-        
+
         public static GameObject AddChild(Transform parent, GameObject child)
         {
             var go = UnityEngine.Object.Instantiate(child, parent.transform, false);
@@ -82,7 +125,7 @@ namespace UIKit
 
         public static void SetScale(GameObject go , bool show = false)
         {
-            go.GetComponent<RectTransform>().localScale = show ? Vector3.one : Vector3.zero;
+            go.GetComponent<Transform>().localScale = show ? Vector3.one : Vector3.zero;
         }
 
         public static void SetScale(RectTransform rt , bool show = false)
@@ -178,7 +221,31 @@ namespace UIKit
         {
             return RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, screenPoint, cam, out localPoint);
         }
-
+        
+        /// <summary>
+        /// 屏幕坐标转某个RectTransform下的localPosition坐标
+        /// 手动计算提高性能
+        /// </summary>
+        /// <param name="rect"></param>
+        /// <param name="screenPoint"></param>
+        /// <param name="cam"></param>
+        /// <returns></returns>
+        public static Vector3 ScreenPointToLocalPointInRectangle(RectTransform rect, Vector2 screenPoint, Camera cam)
+        {
+            Vector2 newPosition = Vector2.zero;
+            var ray = cam.ScreenPointToRay(screenPoint);
+            var normal = Vector3.Normalize(rect.rotation * Vector3.back);
+            var distance = -Vector3.Dot(normal, rect.position);
+            var a = Vector3.Dot(ray.direction, normal);
+            if (Mathf.Approximately(a, 0.0f)) return newPosition;
+            var num = -Vector3.Dot(ray.origin, normal) - distance;
+            var enter = num / a;
+            if (enter <= 0.0) return newPosition;
+            var worldPoint = ray.origin + enter * ray.direction;
+            newPosition = (Vector2) rect.InverseTransformPoint(worldPoint);
+            return newPosition;
+        }
+        
         #endregion
 
 

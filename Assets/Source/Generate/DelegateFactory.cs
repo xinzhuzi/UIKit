@@ -38,6 +38,7 @@ public class DelegateFactory
 		dict.Add(typeof(UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene>), factory.UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene);
 		dict.Add(typeof(System.Action<UnityEngine.Object>), factory.System_Action_UnityEngine_Object);
 		dict.Add(typeof(System.Action<UnityEngine.GameObject>), factory.System_Action_UnityEngine_GameObject);
+		dict.Add(typeof(System.Action<UnityEngine.U2D.SpriteAtlas>), factory.System_Action_UnityEngine_U2D_SpriteAtlas);
 		dict.Add(typeof(System.Action<UnityEngine.Sprite>), factory.System_Action_UnityEngine_Sprite);
 		dict.Add(typeof(System.Action<UnityEngine.EventSystems.PointerEventData>), factory.System_Action_UnityEngine_EventSystems_PointerEventData);
 		dict.Add(typeof(System.Action<UnityEngine.EventSystems.BaseEventData>), factory.System_Action_UnityEngine_EventSystems_BaseEventData);
@@ -70,6 +71,7 @@ public class DelegateFactory
 		DelegateTraits<UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene>>.Init(factory.UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene);
 		DelegateTraits<System.Action<UnityEngine.Object>>.Init(factory.System_Action_UnityEngine_Object);
 		DelegateTraits<System.Action<UnityEngine.GameObject>>.Init(factory.System_Action_UnityEngine_GameObject);
+		DelegateTraits<System.Action<UnityEngine.U2D.SpriteAtlas>>.Init(factory.System_Action_UnityEngine_U2D_SpriteAtlas);
 		DelegateTraits<System.Action<UnityEngine.Sprite>>.Init(factory.System_Action_UnityEngine_Sprite);
 		DelegateTraits<System.Action<UnityEngine.EventSystems.PointerEventData>>.Init(factory.System_Action_UnityEngine_EventSystems_PointerEventData);
 		DelegateTraits<System.Action<UnityEngine.EventSystems.BaseEventData>>.Init(factory.System_Action_UnityEngine_EventSystems_BaseEventData);
@@ -102,6 +104,7 @@ public class DelegateFactory
 		TypeTraits<UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene>>.Init(factory.Check_UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene);
 		TypeTraits<System.Action<UnityEngine.Object>>.Init(factory.Check_System_Action_UnityEngine_Object);
 		TypeTraits<System.Action<UnityEngine.GameObject>>.Init(factory.Check_System_Action_UnityEngine_GameObject);
+		TypeTraits<System.Action<UnityEngine.U2D.SpriteAtlas>>.Init(factory.Check_System_Action_UnityEngine_U2D_SpriteAtlas);
 		TypeTraits<System.Action<UnityEngine.Sprite>>.Init(factory.Check_System_Action_UnityEngine_Sprite);
 		TypeTraits<System.Action<UnityEngine.EventSystems.PointerEventData>>.Init(factory.Check_System_Action_UnityEngine_EventSystems_PointerEventData);
 		TypeTraits<System.Action<UnityEngine.EventSystems.BaseEventData>>.Init(factory.Check_System_Action_UnityEngine_EventSystems_BaseEventData);
@@ -134,6 +137,7 @@ public class DelegateFactory
 		StackTraits<UnityEngine.Events.UnityAction<UnityEngine.SceneManagement.Scene,UnityEngine.SceneManagement.Scene>>.Push = factory.Push_UnityEngine_Events_UnityAction_UnityEngine_SceneManagement_Scene_UnityEngine_SceneManagement_Scene;
 		StackTraits<System.Action<UnityEngine.Object>>.Push = factory.Push_System_Action_UnityEngine_Object;
 		StackTraits<System.Action<UnityEngine.GameObject>>.Push = factory.Push_System_Action_UnityEngine_GameObject;
+		StackTraits<System.Action<UnityEngine.U2D.SpriteAtlas>>.Push = factory.Push_System_Action_UnityEngine_U2D_SpriteAtlas;
 		StackTraits<System.Action<UnityEngine.Sprite>>.Push = factory.Push_System_Action_UnityEngine_Sprite;
 		StackTraits<System.Action<UnityEngine.EventSystems.PointerEventData>>.Push = factory.Push_System_Action_UnityEngine_EventSystems_PointerEventData;
 		StackTraits<System.Action<UnityEngine.EventSystems.BaseEventData>>.Push = factory.Push_System_Action_UnityEngine_EventSystems_BaseEventData;
@@ -1464,6 +1468,63 @@ public class DelegateFactory
 	}
 
 	void Push_System_Action_UnityEngine_GameObject(IntPtr L, System.Action<UnityEngine.GameObject> o)
+	{
+		ToLua.Push(L, o);
+	}
+
+	class System_Action_UnityEngine_U2D_SpriteAtlas_Event : LuaDelegate
+	{
+		public System_Action_UnityEngine_U2D_SpriteAtlas_Event(LuaFunction func) : base(func) { }
+		public System_Action_UnityEngine_U2D_SpriteAtlas_Event(LuaFunction func, LuaTable self) : base(func, self) { }
+
+		public void Call(UnityEngine.U2D.SpriteAtlas param0)
+		{
+			func.BeginPCall();
+			func.PushSealed(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+
+		public void CallWithSelf(UnityEngine.U2D.SpriteAtlas param0)
+		{
+			func.BeginPCall();
+			func.Push(self);
+			func.PushSealed(param0);
+			func.PCall();
+			func.EndPCall();
+		}
+	}
+
+	public System.Action<UnityEngine.U2D.SpriteAtlas> System_Action_UnityEngine_U2D_SpriteAtlas(LuaFunction func, LuaTable self, bool flag)
+	{
+		if (func == null)
+		{
+			System.Action<UnityEngine.U2D.SpriteAtlas> fn = delegate(UnityEngine.U2D.SpriteAtlas param0) { };
+			return fn;
+		}
+
+		if(!flag)
+		{
+			System_Action_UnityEngine_U2D_SpriteAtlas_Event target = new System_Action_UnityEngine_U2D_SpriteAtlas_Event(func);
+			System.Action<UnityEngine.U2D.SpriteAtlas> d = target.Call;
+			target.method = d.Method;
+			return d;
+		}
+		else
+		{
+			System_Action_UnityEngine_U2D_SpriteAtlas_Event target = new System_Action_UnityEngine_U2D_SpriteAtlas_Event(func, self);
+			System.Action<UnityEngine.U2D.SpriteAtlas> d = target.CallWithSelf;
+			target.method = d.Method;
+			return d;
+		}
+	}
+
+	bool Check_System_Action_UnityEngine_U2D_SpriteAtlas(IntPtr L, int pos)
+	{
+		return TypeChecker.CheckDelegateType(typeof(System.Action<UnityEngine.U2D.SpriteAtlas>), L, pos);
+	}
+
+	void Push_System_Action_UnityEngine_U2D_SpriteAtlas(IntPtr L, System.Action<UnityEngine.U2D.SpriteAtlas> o)
 	{
 		ToLua.Push(L, o);
 	}

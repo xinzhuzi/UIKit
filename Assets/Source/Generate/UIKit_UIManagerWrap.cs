@@ -7,36 +7,24 @@ public class UIKit_UIManagerWrap
 	public static void Register(LuaState L)
 	{
 		L.BeginClass(typeof(UIKit.UIManager), typeof(UnityEngine.MonoBehaviour));
-		L.RegFunction("AddLoad", AddLoad);
 		L.RegFunction("Destroy", Destroy);
+		L.RegFunction("Close", Close);
+		L.RegFunction("Open", Open);
 		L.RegFunction("Query", Query);
 		L.RegFunction("IsOpen", IsOpen);
-		L.RegFunction("Open", Open);
-		L.RegFunction("Close", Close);
+		L.RegFunction("UpdateFixedSortingOrder", UpdateFixedSortingOrder);
+		L.RegFunction("UpdateOptCullUI", UpdateOptCullUI);
+		L.RegFunction("ClearOptCullUI", ClearOptCullUI);
 		L.RegFunction("__eq", op_Equality);
 		L.RegFunction("__tostring", ToLua.op_ToString);
+		L.RegVar("UICameraName", get_UICameraName, null);
+		L.RegVar("Adapter_Pool_Name", get_Adapter_Pool_Name, null);
+		L.RegConstant("SortingOrderBoundary", 20000);
+		L.RegVar("IsRunUGUI", get_IsRunUGUI, set_IsRunUGUI);
 		L.RegVar("Instance", get_Instance, null);
 		L.RegVar("UIRoot", get_UIRoot, null);
 		L.RegVar("UICamera", get_UICamera, null);
 		L.EndClass();
-	}
-
-	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int AddLoad(IntPtr L)
-	{
-		try
-		{
-			ToLua.CheckArgsCount(L, 2);
-			UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
-			string arg0 = ToLua.CheckString(L, 2);
-			UnityEngine.GameObject o = obj.AddLoad(arg0);
-			ToLua.PushSealed(L, o);
-			return 1;
-		}
-		catch (Exception e)
-		{
-			return LuaDLL.toluaL_exception(L, e);
-		}
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
@@ -67,10 +55,53 @@ public class UIKit_UIManagerWrap
 				LuaDLL.lua_pushboolean(L, o);
 				return 1;
 			}
+			else if (count == 3)
+			{
+				UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
+				bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+				bool arg1 = LuaDLL.luaL_checkboolean(L, 3);
+				obj.Destroy(arg0, arg1);
+				return 0;
+			}
 			else
 			{
 				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIKit.UIManager.Destroy");
 			}
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Close(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.Close(arg0);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int Open(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			UnityEngine.GameObject o = obj.Open(arg0);
+			ToLua.PushSealed(L, o);
+			return 1;
 		}
 		catch (Exception e)
 		{
@@ -101,28 +132,12 @@ public class UIKit_UIManagerWrap
 	{
 		try
 		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2 && TypeChecker.CheckTypes<string>(L, 2))
-			{
-				UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
-				string arg0 = ToLua.ToString(L, 2);
-				bool o = obj.IsOpen(arg0);
-				LuaDLL.lua_pushboolean(L, o);
-				return 1;
-			}
-			else if (count == 2 && TypeChecker.CheckTypes<UnityEngine.GameObject>(L, 2))
-			{
-				UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
-				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.ToObject(L, 2);
-				bool o = obj.IsOpen(arg0);
-				LuaDLL.lua_pushboolean(L, o);
-				return 1;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIKit.UIManager.IsOpen");
-			}
+			ToLua.CheckArgsCount(L, 2);
+			UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			bool o = obj.IsOpen(arg0);
+			LuaDLL.lua_pushboolean(L, o);
+			return 1;
 		}
 		catch (Exception e)
 		{
@@ -131,31 +146,16 @@ public class UIKit_UIManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Open(IntPtr L)
+	static int UpdateFixedSortingOrder(IntPtr L)
 	{
 		try
 		{
-			int count = LuaDLL.lua_gettop(L);
-
-			if (count == 2 && TypeChecker.CheckTypes<UnityEngine.GameObject>(L, 2))
-			{
-				UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
-				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.ToObject(L, 2);
-				obj.Open(arg0);
-				return 0;
-			}
-			else if (count == 2 && TypeChecker.CheckTypes<string>(L, 2))
-			{
-				UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
-				string arg0 = ToLua.ToString(L, 2);
-				UnityEngine.GameObject o = obj.Open(arg0);
-				ToLua.PushSealed(L, o);
-				return 1;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIKit.UIManager.Open");
-			}
+			ToLua.CheckArgsCount(L, 3);
+			UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			int arg1 = (int)LuaDLL.luaL_checknumber(L, 3);
+			obj.UpdateFixedSortingOrder(arg0, arg1);
+			return 0;
 		}
 		catch (Exception e)
 		{
@@ -164,30 +164,33 @@ public class UIKit_UIManagerWrap
 	}
 
 	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-	static int Close(IntPtr L)
+	static int UpdateOptCullUI(IntPtr L)
 	{
 		try
 		{
-			int count = LuaDLL.lua_gettop(L);
+			ToLua.CheckArgsCount(L, 3);
+			UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			bool arg1 = LuaDLL.luaL_checkboolean(L, 3);
+			obj.UpdateOptCullUI(arg0, arg1);
+			return 0;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
 
-			if (count == 2 && TypeChecker.CheckTypes<string>(L, 2))
-			{
-				UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
-				string arg0 = ToLua.ToString(L, 2);
-				obj.Close(arg0);
-				return 0;
-			}
-			else if (count == 2 && TypeChecker.CheckTypes<UnityEngine.GameObject>(L, 2))
-			{
-				UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
-				UnityEngine.GameObject arg0 = (UnityEngine.GameObject)ToLua.ToObject(L, 2);
-				obj.Close(arg0);
-				return 0;
-			}
-			else
-			{
-				return LuaDLL.luaL_throw(L, "invalid arguments to method: UIKit.UIManager.Close");
-			}
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int ClearOptCullUI(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 2);
+			UIKit.UIManager obj = (UIKit.UIManager)ToLua.CheckObject(L, 1, typeof(UIKit.UIManager));
+			string arg0 = ToLua.CheckString(L, 2);
+			obj.ClearOptCullUI(arg0);
+			return 0;
 		}
 		catch (Exception e)
 		{
@@ -205,6 +208,48 @@ public class UIKit_UIManagerWrap
 			UnityEngine.Object arg1 = (UnityEngine.Object)ToLua.ToObject(L, 2);
 			bool o = arg0 == arg1;
 			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_UICameraName(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, UIKit.UIManager.UICameraName);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_Adapter_Pool_Name(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushstring(L, UIKit.UIManager.Adapter_Pool_Name);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_IsRunUGUI(IntPtr L)
+	{
+		try
+		{
+			LuaDLL.lua_pushboolean(L, UIKit.UIManager.IsRunUGUI);
 			return 1;
 		}
 		catch (Exception e)
@@ -248,6 +293,21 @@ public class UIKit_UIManagerWrap
 		{
 			ToLua.PushSealed(L, UIKit.UIManager.UICamera);
 			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int set_IsRunUGUI(IntPtr L)
+	{
+		try
+		{
+			bool arg0 = LuaDLL.luaL_checkboolean(L, 2);
+			UIKit.UIManager.IsRunUGUI = arg0;
+			return 0;
 		}
 		catch (Exception e)
 		{

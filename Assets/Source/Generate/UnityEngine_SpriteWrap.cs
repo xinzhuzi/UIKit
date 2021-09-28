@@ -23,6 +23,7 @@ public class UnityEngine_SpriteWrap
 		L.RegVar("spriteAtlasTextureScale", get_spriteAtlasTextureScale, null);
 		L.RegVar("associatedAlphaSplitTexture", get_associatedAlphaSplitTexture, null);
 		L.RegVar("pivot", get_pivot, null);
+		L.RegVar("isUsingPlaceholder", get_isUsingPlaceholder, null);
 		L.RegVar("packed", get_packed, null);
 		L.RegVar("packingMode", get_packingMode, null);
 		L.RegVar("packingRotation", get_packingRotation, null);
@@ -377,6 +378,25 @@ public class UnityEngine_SpriteWrap
 		catch(Exception e)
 		{
 			return LuaDLL.toluaL_exception(L, e, o, "attempt to index pivot on a nil value");
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int get_isUsingPlaceholder(IntPtr L)
+	{
+		object o = null;
+
+		try
+		{
+			o = ToLua.ToObject(L, 1);
+			UnityEngine.Sprite obj = (UnityEngine.Sprite)o;
+			bool ret = obj.isUsingPlaceholder;
+			LuaDLL.lua_pushboolean(L, ret);
+			return 1;
+		}
+		catch(Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e, o, "attempt to index isUsingPlaceholder on a nil value");
 		}
 	}
 

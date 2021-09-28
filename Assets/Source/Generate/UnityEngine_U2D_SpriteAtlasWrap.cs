@@ -8,6 +8,7 @@ public class UnityEngine_U2D_SpriteAtlasWrap
 	{
 		L.BeginClass(typeof(UnityEngine.U2D.SpriteAtlas), typeof(UnityEngine.Object));
 		L.RegFunction("CanBindTo", CanBindTo);
+		L.RegFunction("IsPlaceholder", IsPlaceholder);
 		L.RegFunction("GetSprite", GetSprite);
 		L.RegFunction("GetSprites", GetSprites);
 		L.RegFunction("New", _CreateUnityEngine_U2D_SpriteAtlas);
@@ -52,6 +53,23 @@ public class UnityEngine_U2D_SpriteAtlasWrap
 			UnityEngine.U2D.SpriteAtlas obj = (UnityEngine.U2D.SpriteAtlas)ToLua.CheckObject(L, 1, typeof(UnityEngine.U2D.SpriteAtlas));
 			UnityEngine.Sprite arg0 = (UnityEngine.Sprite)ToLua.CheckObject(L, 2, typeof(UnityEngine.Sprite));
 			bool o = obj.CanBindTo(arg0);
+			LuaDLL.lua_pushboolean(L, o);
+			return 1;
+		}
+		catch (Exception e)
+		{
+			return LuaDLL.toluaL_exception(L, e);
+		}
+	}
+
+	[MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+	static int IsPlaceholder(IntPtr L)
+	{
+		try
+		{
+			ToLua.CheckArgsCount(L, 1);
+			UnityEngine.U2D.SpriteAtlas obj = (UnityEngine.U2D.SpriteAtlas)ToLua.CheckObject(L, 1, typeof(UnityEngine.U2D.SpriteAtlas));
+			bool o = obj.IsPlaceholder();
 			LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}

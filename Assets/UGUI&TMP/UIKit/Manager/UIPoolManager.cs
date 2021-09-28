@@ -15,7 +15,7 @@ namespace UIKit
         private static int _uiLayer;
 
         private DoubleMap<string, GameObject> _cache;
-        private int _capacity = 10;
+        private int _capacity = 20;
         private void Awake()
         {
             _uiLayer = LayerMask.NameToLayer("UI");
@@ -30,22 +30,21 @@ namespace UIKit
         public void Add(string id, GameObject module)
         {
             //检查Layer
-            if (module.layer != _uiLayer)
-            {
-                throw new Exception("当前加入缓存池子的 obj 不是UI层级,不能加入到此缓存池子里面");
-            }
+            if (module.layer != _uiLayer) throw new Exception("当前加入缓存池子的 obj 不是UI层级,不能加入到此缓存池子里面");
 
             //达到上限了,需要从最底层的哪一个删除掉,缓存不易过多
-            if (_cache.Count == _capacity) Destroy(transform.GetChild(0).gameObject);
+            if (_cache.Count == _capacity)
+            {
+                var go = transform.GetChild(0).gameObject;
+                UIHelper.Unload(_cache.GetKeyByValue(go));
+                Destroy(go);
+            }
             
             //设置进池子里面
             module.transform.SetParent(this.transform);
             module.layer = this.gameObject.layer;
             var luaModule = module.GetComponent<LuaModule>();
-            if (null != luaModule)
-            {
-                luaModule.enabled = false;
-            }
+            if (luaModule) luaModule.enabled = false;
             _cache.Add(id, module);
         }
 
@@ -59,10 +58,7 @@ namespace UIKit
             module.layer = parent.gameObject.layer;
             module.GetComponent<RectTransform>().localScale = Vector3.one;
             var luaModule = module.GetComponent<LuaModule>();
-            if (null != luaModule)
-            {
-                luaModule.enabled = true;
-            }
+            if (luaModule) luaModule.enabled = true;
             _cache.RemoveByKey(id);
             return module;
         }
@@ -87,12 +83,15 @@ namespace UIKit
         }
 
         //清除所有的 UI 缓存,切换场景时使用
-        public void DestroyAll()
+        public void DestroyAll(bool unload = false)
         {
-            for (int i = this.transform.childCount - 1; i >= 0; i--)//倒序删除
+            for (var i = this.transform.childCount - 1; i >= 0; i--)//倒序删除
             {
-                DestroyImmediate(this.transform.GetChild(i).gameObject);
+                var go = this.transform.GetChild(i).gameObject;
+                if (unload) UIHelper.Unload(_cache.GetKeyByValue(go));
+                DestroyImmediate(go);
             }
+            _cache.Clear();
         }
     }
 }

@@ -24,9 +24,9 @@ public class UnityEngine_UI_UILongPressListenerWrap
 		{
 			int count = LuaDLL.lua_gettop(L);
 
-			if (count == 1 && TypeChecker.CheckTypes<UnityEngine.RectTransform>(L, 1))
+			if (count == 1 && TypeChecker.CheckTypes<UnityEngine.Transform>(L, 1))
 			{
-				UnityEngine.RectTransform arg0 = (UnityEngine.RectTransform)ToLua.ToObject(L, 1);
+				UnityEngine.Transform arg0 = (UnityEngine.Transform)ToLua.ToObject(L, 1);
 				UnityEngine.UI.UILongPressListener o = UnityEngine.UI.UILongPressListener.Get(arg0);
 				ToLua.PushSealed(L, o);
 				return 1;

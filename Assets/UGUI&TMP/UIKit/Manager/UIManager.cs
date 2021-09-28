@@ -1,189 +1,165 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UIKit
 {
-    public sealed class UIManager : MonoBehaviour
+    public partial class UIManager : MonoBehaviour
     {
         public static UIManager Instance => m_Instance;
         public static GameObject UIRoot => m_UIRoot;
         public static Camera UICamera => m_UICamera;
         
+        
+        public const string UICameraName = "UICamera";
+        public const string Adapter_Pool_Name = "Adapter_Pool";
+        public const int SortingOrderBoundary = 20000;
+
+        //TODO:主要是为了和 NGUI 区分,在 NGUI 干掉之后,这个参数也需要干掉
+        public static bool IsRunUGUI;
+        
         private static UIManager m_Instance;
         private static GameObject m_UIRoot;
         private static Camera m_UICamera;
-        
-        
-        //仅当前显示的界面 UI,包括 子canvas 与 子控件,不包括UIPoolManager以及子节点
-        private DoubleMap<string, GameObject> _children;
-        
         private UIPoolManager _pool;
+
         private void Awake()
         {
             m_Instance = this;
-            m_UICamera = GameObject.FindWithTag("UICamera").GetComponent<Camera>();
             _children = new DoubleMap<string, GameObject>(20);
-            _pool = GetComponentInChildren<UIPoolManager>();
+            _allData = new Dictionary<string, UIModuleData>(20);
+            _moduleOptCull = new Dictionary<string, List<string>>(20);
+            //这 2 个是固定的.
+            {//摄像机
+                var data = UIModuleData.Clone();
+                data.Id = UICameraName;
+                data.Go = GameObject.FindWithTag(data.Id);
+                data.SortingOrder = 0;
+                m_UICamera = data.Go.GetComponent<Camera>();
+                _children.Add(data.Id,data.Go);
+                _allData.Add(data.Id,data);
+            }
+
+            {//池子与适配
+                _pool = GetComponentInChildren<UIPoolManager>();
+                var data = UIModuleData.Clone();
+                data.Id = Adapter_Pool_Name;
+                data.Go = _pool.gameObject;
+                data.SortingOrder = 1;
+                _children.Add(data.Id,data.Go);
+                _allData.Add(data.Id,data);
+            }
+            
 #if UNITY_EDITOR
             UIAnalyze.RunInEditor();
 #endif
         }
 
-        public GameObject AddLoad(string id)
-        {
-            //先检查当前子节点当中是否包含
-            var go = _children.GetValueByKey(id);
-            if (null != go) return go;
-            //再检查缓存池子中当中是否包含
-            go = _pool.Query(id);
-            if (null != go) return go;
 
-            //都不包含时,检查 Resources 文件夹下是否包含
-            var template = Resources.Load<GameObject>(id);
-            if (null == template) //如果在 Resources 文件夹下没有这个,才去加载 ab 包
-            {
-                template = UIHelper.Load(id) as GameObject;
-            }
-            //根据模板创建实例
-            var module = GameObject.Instantiate(template, this.transform);
-            _children.Add(id,module);
-            module.GetComponent<RectTransform>().localScale = Vector3.one;
-            return module;
-        }
         
-        #region UI 辅助操作,id 表示唯一标志性 id,也可以理解为 obj 的名字,当前 UI 控件
-
-        //销毁某个 UI,不管是否在池子里面,返回 false 的含义:1.有可能没在 UI 节点下面,2.也许没有删掉,多删除一次等等.
-        //一般情况下不使用判断写法,直接调用方法即可.
-        public bool Destroy(string id)
-        {
-            if (_pool.Destroy(id))
-            {
-                return true;
-            }
-            //如果没有在池子里面
-            var go = _children.GetValueByKey(id);
-            if (null == go) return false;
-            DestroyImmediate(go);
-            return _children.RemoveByKey(id);
-        }
-
-        //清除 UIRoot 下面的所有 UI
-        public void Destroy(bool isDestroyPoolChild = true)
-        {
-            if (isDestroyPoolChild)
-            {
-                _pool.DestroyAll();
-            }
-            
-            //倒序删除
-            for (var i = m_UIRoot.transform.childCount - 1; i >= 0; i--)
-            {
-                var t = m_UIRoot.transform.GetChild(i);
-                if (ReferenceEquals(t,_pool.transform))
-                {
-                    continue;//UIPoolManager 不能删除
-                }
-                
-                DestroyImmediate(t.gameObject);
-            }
-        }
-
-
-        //查询某个子UI
-        public GameObject Query(string id)
-        {
-            var go = _children.GetValueByKey(id);
-            return null != go ? go : _pool.Query(id);
-        }
-
         public bool IsOpen(string id)
         {
             return _children.ContainsKey(id);
         }
-        
-        public bool IsOpen(GameObject go)
-        {
-            return _children.ContainsValue(go);
-        }
-        
-        public void Open(GameObject go)
-        {
-            go.layer = LayerMask.NameToLayer("UI");
-            var id = go.name.Replace("(Clone)", "");
-            if (_children.ContainsKey(id) || _children.ContainsValue(go))
-            {
-                throw new Exception("UIRoot 已经存在了传入的对象或者存在相同的名字:" + id);
-            }
-            go.transform.SetParent(this.transform,false);
-            go.GetComponent<RectTransform>().localScale = Vector3.one;
-            _children.Add(id,go);
-            AutoIncrementLayer();
-        }
 
-        //查询某个子UI,将 UI 展示出来
-        public GameObject Open(string id)
+        // 更新当前 canvas 的 SortingOrder,数据从 lua 中传入,当成一种配置表使用
+        public void UpdateFixedSortingOrder(string id,int sortingOrder)
         {
-            var go = _children.GetValueByKey(id);
-            if (null != go)//如果当前已经打开了,则不需要再次打开
+            if (!_allData.TryGetValue(id,out var data))//得到 UIModuleData
             {
-                return go;
+                data = UIModuleData.Clone();
+                data.Id = id;
+                data.SortingOrder = sortingOrder;
             }
-            
-            //查看 缓存池子里面是否有,有则拿出来
-            go = _pool.Query(id);
-            if (null != go)
-            {
-                //打开的时候,必须将缩放设置为 1,其他布局方式由使用者操作
-                _children.Add(id,go);
-            }
-            else
-            {
-                go = AddLoad(id);//本身没有,缓存没有,则从本地加载 UI
-            }
-
+            data.SortingOrder = sortingOrder;
+            _allData[id] = data;
             AutoIncrementLayer();
-            return go;
-        }
-        
-        //将子UI模块移动到池子里面进行隐藏
-        public void Close(string id)
-        {
-            var go = _children.GetValueByKey(id);
-            if (null == go) return;
-            //如果当前已经打开了,则不需要再次打开
-            _pool.Add(id,go);
-            _children.RemoveByValue(go);
-        }
-        
-        public void Close(GameObject go)
-        {
-            if (_children.ContainsValue(go))
-            {
-                var goName = _children.GetKeyByValue(go);
-                _pool.Add(goName,go);
-                _children.RemoveByKey(goName);
-            }
-            else
-            {
-                Debug.LogError("不是 UIRoot 下的子节点,请不要使用此方式销毁");
-            }
         }
 
         private void AutoIncrementLayer()
         {
-            var i = 10;
-            foreach (var item in _children.ForEachValues())
+            for (var i = 0; i < this.transform.childCount; i++)
             {
-                i++;
-                var canvas = item.GetComponent<Canvas>();//没有 canvas 的不能进行自增 order
-                if (canvas == null) continue;
-                canvas.sortingOrder = item.CompareTag("GM") ? 30000 : i;
+                var go = this.transform.GetChild(i).gameObject;
+                var id = _children.GetKeyByValue(go);
+                var data = _allData[id];
+                if (data.SortingOrder > SortingOrderBoundary) continue;
+                data.SortingOrder = i;
             }
         }
         
-        #endregion
+        /// <summary>
+        /// 某个模块,打开时是否关闭后面的所有 UI 模块
+        /// 此数据是设置某个UI 模块优化,当打开这个 UI 模块时,需要将其隐藏的 UI 模块全部关闭,关闭这个 UI 模块时,再将其隐藏的 UI 模块内全部打开.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="opt"></param>
+        public void UpdateOptCullUI(string id,bool optCullUI)
+        {
+            if (!_allData.TryGetValue(id,out var data))//得到 UIModuleData
+            {
+                data = UIModuleData.Clone();
+                data.Id = id;
+            }
+            data.OptCullUI = optCullUI;
+            _allData[id] = data;
+        }
         
+        //清空优化的栈,使其再次打开时,不用打开其背后的UI
+        public void ClearOptCullUI(string id)
+        {
+            if (!_moduleOptCull.TryGetValue(id,out var optCullUIOrder)) return;
+            optCullUIOrder.Clear();
+            _moduleOptCull[id] = optCullUIOrder;
+        }
+        
+        //清空优化的栈
+        private void ClearOptCullUI()
+        {
+            foreach (var id in new List<string>(_moduleOptCull.Keys))
+            {
+                if (!_moduleOptCull.TryGetValue(id,out var optCullUIOrder)) continue;
+                optCullUIOrder.Clear();
+                _moduleOptCull[id] = optCullUIOrder;
+            }
+        }
+        
+        private void AutoOptCullUI(string id, bool openOrClose)
+        {
+            if (openOrClose) //打开的情况
+            {
+                if (!_moduleOptCull.TryGetValue(id,out var optCullUIOrder))
+                {
+                    optCullUIOrder = new List<string>(10);
+                }
+                optCullUIOrder.Clear();
+                for (var i = 0; i < this.transform.childCount; i++)
+                {
+                    var go = this.transform.GetChild(i).gameObject;
+                    var data = _allData[_children.GetKeyByValue(go)];
+                    if (data.Id == UICameraName || 
+                        data.Id == Adapter_Pool_Name || 
+                        data.SortingOrder > SortingOrderBoundary || 
+                        data.OptCullUI) continue;
+                    optCullUIOrder.Add(data.Id);
+                }
+                _moduleOptCull[id] = optCullUIOrder;
+                foreach (var item in optCullUIOrder)
+                {
+                    Close(item);//全部被当前 id 模块隐藏的UI 模块,需要关闭
+                }
+            }
+            else //关闭的情况
+            {
+                var optCullUIOrder = _moduleOptCull[id];
+                foreach (var item in optCullUIOrder)
+                {
+                    Open(item);//全部被当前 id 模块隐藏的UI 模块,需要关闭
+                }
+                optCullUIOrder.Clear();
+                _moduleOptCull[id] = optCullUIOrder;
+            }
+        }
         
         //自动入口,目前不使用此方法,外部调用的第一个方法
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
