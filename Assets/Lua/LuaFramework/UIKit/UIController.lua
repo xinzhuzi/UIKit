@@ -1,9 +1,45 @@
-
 --所有 UI 的父类,是一个多例,不是唯一的
 _G.UIController = class("UIController")
 local this = UIController
 
 this.view = nil 
+this.model = nil
+
+
+
+--[[ --固定写法,请参考 gm.lua
+
+function this:Awake()
+    this.view  = require("UI/game_command/gm_view")
+    this.model = require("UI/game_command/gm_model")
+end
+
+function this:OnEnable()
+    self:refresh()
+end
+
+function this:Start()
+    self:initialize()
+end
+
+function this:OnDisable()
+    self:reset()
+end
+
+function this:OnDestroy()
+    self:destroy()
+end
+]]--
+
+
+
+
+
+--所有 UI 的父类,是一个多例,不是唯一的
+_G.UIController = class("UIController")
+local this = UIController
+
+this.view = nil
 this.model = nil
 
 
@@ -76,6 +112,7 @@ function this:reset()
 end
 
 function this:destroy()
+    lua_data_center.Set(self["name"],nil)
     if self.model then
         self.model:destroy()
     end
