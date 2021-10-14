@@ -24,10 +24,13 @@ namespace UIKit
                 path = isPath + "/PanelCanvas.prefab";
             }
 
+            var parent = new GameObject("parent", typeof(Canvas));
             var go = new GameObject("PanelCanvas", typeof(Canvas), typeof(GraphicRaycaster),typeof(UIKit.LuaModule))//
             {
                 layer = LayerMask.NameToLayer("UI")
             };
+            go.transform.SetParent(parent.transform);
+            
             var rect = go.GetComponent<RectTransform>();
             rect.anchorMin = Vector2.zero;
             rect.anchorMax = Vector2.one;
@@ -37,7 +40,7 @@ namespace UIKit
             var canvas = go.GetComponent<Canvas>();
             canvas.overrideSorting = true;
             canvas.sortingLayerName = "UI";
-
+            
             var bg = DefaultControls.CreateRawImage(default);
             bg.transform.parent = go.transform;
             bg.name = "bg";
@@ -50,6 +53,7 @@ namespace UIKit
             
             var prefab = PrefabUtility.SaveAsPrefabAsset(go,path);
             Object.DestroyImmediate(go);
+            Object.DestroyImmediate(parent);
             AssetDatabase.Refresh();
             AssetDatabase.OpenAsset(prefab);
             
