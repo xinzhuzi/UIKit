@@ -69,8 +69,8 @@ public class UnityEngine_U2D_SpriteAtlasWrap
 		{
 			ToLua.CheckArgsCount(L, 1);
 			UnityEngine.U2D.SpriteAtlas obj = (UnityEngine.U2D.SpriteAtlas)ToLua.CheckObject(L, 1, typeof(UnityEngine.U2D.SpriteAtlas));
-			bool o = obj.IsPlaceholder();
-			LuaDLL.lua_pushboolean(L, o);
+			// bool o = obj.IsPlaceholder();
+			// LuaDLL.lua_pushboolean(L, o);
 			return 1;
 		}
 		catch (Exception e)

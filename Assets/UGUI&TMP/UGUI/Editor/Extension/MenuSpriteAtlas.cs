@@ -54,7 +54,7 @@ namespace UnityEditor.UI
 #endif
 
 
-            spriteAtlas.SetIncludeInBuild(false);
+            spriteAtlas.SetIncludeInBuild(true);
             var packSetting = new SpriteAtlasPackingSettings()
             {
                 blockOffset = 1,

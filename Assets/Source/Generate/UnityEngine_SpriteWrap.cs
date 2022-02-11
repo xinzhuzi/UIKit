@@ -390,8 +390,8 @@ public class UnityEngine_SpriteWrap
 		{
 			o = ToLua.ToObject(L, 1);
 			UnityEngine.Sprite obj = (UnityEngine.Sprite)o;
-			bool ret = obj.isUsingPlaceholder;
-			LuaDLL.lua_pushboolean(L, ret);
+			// bool ret = obj.isUsingPlaceholder;
+			// LuaDLL.lua_pushboolean(L, ret);
 			return 1;
 		}
 		catch(Exception e)
