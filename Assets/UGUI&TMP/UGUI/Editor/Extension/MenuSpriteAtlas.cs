@@ -52,7 +52,8 @@ namespace UnityEditor.UI
             }
             haves = spriteAtlas.GetPackables();
 #endif
-
+            var atlasPath = SavePath + select.name + suffix;
+            RemoveAllSprite(spriteAtlas,haves,atlasPath);
 
             spriteAtlas.SetIncludeInBuild(true);
             var packSetting = new SpriteAtlasPackingSettings()
@@ -82,6 +83,29 @@ namespace UnityEditor.UI
                 compressionQuality = 50,
             };
             spriteAtlas.SetPlatformSettings(platformSetting);
+            //IOS设置
+            var iPhoneSetting = new TextureImporterPlatformSettings()
+            {
+                name = "iPhone",
+                maxTextureSize = 1024,
+                format = TextureImporterFormat.ASTC_4x4,
+                overridden = true,
+                crunchedCompression = true,
+                textureCompression = TextureImporterCompression.Compressed,
+                compressionQuality = 50,
+            };
+            //安卓设置
+            var androidSetting = new TextureImporterPlatformSettings()
+            {
+                name = "Android",
+                maxTextureSize = 1024,
+                format = TextureImporterFormat.ASTC_4x4,
+                overridden = true,
+                crunchedCompression = true,
+                textureCompression = TextureImporterCompression.Compressed,
+                compressionQuality = 50,
+            };
+
 
             var dir = new DirectoryInfo(dirPath);
             var sprites = new List<Object>();
@@ -109,14 +133,17 @@ namespace UnityEditor.UI
                     Debug.LogWarning(sprite.name + " 的高度不是 2 的倍数,请让美术重新制作");
                 }
 
-                if (haves != null && haves.Contains(sprite)) continue;
                 sprites.Add(sprite);
             }
+            spriteAtlas.SetPlatformSettings(iPhoneSetting);
+            spriteAtlas.SetPlatformSettings(androidSetting);
             spriteAtlas.Add(sprites.ToArray());
 
-            var atlasPath = SavePath + select.name + suffix;
             var abName = AssetImporter.GetAtPath(atlasPath)?.assetBundleName;
-            AssetDatabase.CreateAsset(spriteAtlas, atlasPath);
+            if (!File.Exists(atlasPath))
+            {
+                AssetDatabase.CreateAsset(spriteAtlas, atlasPath);
+            }
             AssetImporter.GetAtPath(atlasPath).assetBundleName = abName;
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
@@ -124,6 +151,16 @@ namespace UnityEditor.UI
             Selection.activeObject = AssetDatabase.LoadAssetAtPath<SpriteAtlas>(SavePath + select.name + suffix);
             EditorUtility.FocusProjectWindow();
         }
+
+        //删除所有的图片
+        private static void RemoveAllSprite(SpriteAtlas spriteAtlas,Object[] sprites, string atlasPath)
+        {
+            spriteAtlas.Remove(sprites);
+            if (File.Exists(atlasPath)) AssetDatabase.SaveAssets();//保存文件
+            SpriteAtlasUtility.PackAllAtlases(EditorUserBuildSettings.activeBuildTarget, false);//让文件生成一次大图,才能在后续使用
+            AssetDatabase.Refresh();
+        }
+
     }
     
 
