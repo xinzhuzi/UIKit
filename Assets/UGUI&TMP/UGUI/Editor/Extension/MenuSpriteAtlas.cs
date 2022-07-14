@@ -112,28 +112,36 @@ namespace UnityEditor.UI
             foreach (var file in dir.GetFiles())
             {
                 if (file.Name.Contains(".meta")) continue;
-                var sprite = AssetDatabase.LoadAssetAtPath<Sprite>($"{dirPath}/{file.Name}");
-                if (sprite.texture.texelSize.x >= 1024)
+                Sprite[] allS = AssetDatabase.LoadAllAssetsAtPath($"{dirPath}/{file.Name}").OfType<Sprite>().ToArray();
+                foreach (var sprite in allS)
                 {
-                    Debug.LogWarning(sprite.name + " 的宽度大于 1024,请确定此图是否需要打入图集中,或让美术重新制作");
-                }
+                    if (sprite.textureRect.width >= 1024)
+                    {
+                        Debug.LogError(sprite.name + " 的宽度大于 1024,请确定此图是否需要打入图集中,或让美术重新制作, 宽度:" + sprite.textureRect.width);
+                        androidSetting.maxTextureSize = 2048;
+                        iPhoneSetting.maxTextureSize = 2048;
+                    }
 
-                if (sprite.texture.texelSize.y >= 1024)
-                {
-                    Debug.LogWarning(sprite.name + " 的高度大于 1024,请确定此图是否需要打入图集中,或让美术重新制作");
-                }
+                    if (sprite.textureRect.height >= 1024)
+                    {
+                        Debug.LogError(sprite.name + " 的高度大于 1024,请确定此图是否需要打入图集中,或让美术重新制作, 高度:" + sprite.textureRect.height);
+                        androidSetting.maxTextureSize = 2048;
+                        iPhoneSetting.maxTextureSize = 2048;
+                    }
 
-                if (sprite.texture.texelSize.x % 2 != 0)
-                {
-                    Debug.LogWarning(sprite.name + " 的宽度不是 2 的倍数,请让美术重新制作");
-                }
+                    if (sprite.textureRect.width % 2 != 0)
+                    {
+                        Debug.LogError(sprite.name + " 的宽度不是 2 的倍数,请让美术重新制作");
+                    
+                    }
 
-                if (sprite.texture.texelSize.y % 2 != 0)
-                {
-                    Debug.LogWarning(sprite.name + " 的高度不是 2 的倍数,请让美术重新制作");
+                    if (sprite.textureRect.height % 2 != 0)
+                    {
+                        Debug.LogError(sprite.name + " 的高度不是 2 的倍数,请让美术重新制作");
+                    }
+                    
+                    sprites.Add(sprite);
                 }
-
-                sprites.Add(sprite);
             }
             spriteAtlas.SetPlatformSettings(iPhoneSetting);
             spriteAtlas.SetPlatformSettings(androidSetting);
@@ -155,8 +163,11 @@ namespace UnityEditor.UI
         //删除所有的图片
         private static void RemoveAllSprite(SpriteAtlas spriteAtlas,Object[] sprites, string atlasPath)
         {
-            spriteAtlas.Remove(sprites);
-            if (File.Exists(atlasPath)) AssetDatabase.SaveAssets();//保存文件
+            if (File.Exists(atlasPath))
+            {
+                spriteAtlas.Remove(sprites);
+                AssetDatabase.SaveAssets();//保存文件
+            }
             SpriteAtlasUtility.PackAllAtlases(EditorUserBuildSettings.activeBuildTarget, false);//让文件生成一次大图,才能在后续使用
             AssetDatabase.Refresh();
         }
