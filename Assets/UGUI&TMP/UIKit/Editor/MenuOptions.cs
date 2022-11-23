@@ -201,14 +201,14 @@ namespace UnityEditor.UI
         //     t.raycastTarget = false;
         // }
 
-        [MenuItem("GameObject/UI/Image", false, 2000)]
+        [MenuItem("GameObject/UI/UISprite", false, 2000)]
         public static void AddImage(MenuCommand menuCommand)
         {
             GameObject go;
             using (new FactorySwapToEditor())
                 go = DefaultControls.CreateImage(GetStandardResources());
             PlaceUIElementRoot(go, menuCommand);
-            go.GetComponent<Image>().raycastTarget = false;
+            go.GetComponent<UISprite>().raycastTarget = false;
             go.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             SetPosition(go);
         }

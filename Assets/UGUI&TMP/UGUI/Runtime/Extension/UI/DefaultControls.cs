@@ -264,7 +264,7 @@ namespace UnityEngine.UI
         /// <returns>The root GameObject of the created element.</returns>
         public static GameObject CreateImage(Resources resources)
         {
-            GameObject go = CreateUIElementRoot("Image", s_ImageElementSize, typeof(Image));
+            GameObject go = CreateUIElementRoot("UISprite", s_ImageElementSize, typeof(UISprite));
             return go;
         }
 

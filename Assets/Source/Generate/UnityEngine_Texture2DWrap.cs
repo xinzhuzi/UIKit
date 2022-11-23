@@ -649,7 +649,7 @@ public class UnityEngine_Texture2DWrap
 				UnityEngine.Texture2D obj = (UnityEngine.Texture2D)ToLua.CheckObject(L, 1, typeof(UnityEngine.Texture2D));
 				int arg0 = (int)LuaDLL.luaL_checknumber(L, 2);
 				int arg1 = (int)LuaDLL.luaL_checknumber(L, 3);
-				bool o = obj.Resize(arg0, arg1);
+				bool o = obj.Reinitialize(arg0, arg1);
 				LuaDLL.lua_pushboolean(L, o);
 				return 1;
 			}
@@ -660,7 +660,7 @@ public class UnityEngine_Texture2DWrap
 				int arg1 = (int)LuaDLL.luaL_checknumber(L, 3);
 				UnityEngine.TextureFormat arg2 = (UnityEngine.TextureFormat)ToLua.ToObject(L, 4);
 				bool arg3 = LuaDLL.lua_toboolean(L, 5);
-				bool o = obj.Resize(arg0, arg1, arg2, arg3);
+				bool o = obj.Reinitialize(arg0, arg1, arg2, arg3);
 				LuaDLL.lua_pushboolean(L, o);
 				return 1;
 			}
@@ -671,7 +671,7 @@ public class UnityEngine_Texture2DWrap
 				int arg1 = (int)LuaDLL.luaL_checknumber(L, 3);
 				UnityEngine.Experimental.Rendering.GraphicsFormat arg2 = (UnityEngine.Experimental.Rendering.GraphicsFormat)ToLua.ToObject(L, 4);
 				bool arg3 = LuaDLL.lua_toboolean(L, 5);
-				bool o = obj.Resize(arg0, arg1, arg2, arg3);
+				bool o = obj.Reinitialize(arg0, arg1, arg2, arg3);
 				LuaDLL.lua_pushboolean(L, o);
 				return 1;
 			}

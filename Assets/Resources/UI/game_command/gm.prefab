@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8483538013108872706}
   - component: {fileID: 4340073896583272052}
-  - component: {fileID: 8178261055301447042}
+  - component: {fileID: 1685025768721197604}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -28,6 +28,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1730075167650730957}
   m_Father: {fileID: 4859888121059074759}
@@ -46,7 +47,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1158621166100272715}
   m_CullTransparentMesh: 1
---- !u!114 &8178261055301447042
+--- !u!114 &1685025768721197604
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,11 +56,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1158621166100272715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c2432f251e1b4ef5bac5914afe73c50, type: 3}
+  m_Script: {fileID: 11500000, guid: 100935b5e3d954de597b2d3029644b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -67,7 +68,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -76,6 +77,9 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+  m_mirrorType: 0
+  m_SpriteName: 
+  m_SpriteAtlas: {fileID: 0}
 --- !u!1 &2101406663622586077
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,6 +108,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8483538013108872706}
   m_RootOrder: 0
@@ -241,6 +246,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8483538013108872706}
   m_Father: {fileID: 0}

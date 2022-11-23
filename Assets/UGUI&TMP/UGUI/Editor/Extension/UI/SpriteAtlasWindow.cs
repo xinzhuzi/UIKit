@@ -17,13 +17,23 @@ namespace UnityEditor.UI
 
         public static Action<SpriteAtlas> OnSelectedSpriteAtlas;
         
-        public static void ShowSpriteAtlasWindow()
+        public static void ShowSpriteAtlasWindow(SpriteAtlas tempSA = null)
         {
-            _spriteAtlas = null;
+            _spriteAtlas = tempSA;
             _sprite = null;
-            currentState = 1;
             controlID = GUIUtility.GetControlID(FocusType.Passive);
-            EditorGUIUtility.ShowObjectPicker<SpriteAtlas>(_spriteAtlas, false, "", controlID);
+
+            if (_spriteAtlas == null)
+            {
+                currentState = 1;
+                EditorGUIUtility.ShowObjectPicker<SpriteAtlas>(_spriteAtlas, false, "", controlID);
+            }
+            else
+            {
+                currentState = 2;
+                EditorGUIUtility.ShowObjectPicker<Sprite>(_sprite, false, 
+                    "l:" + SetAtlasLabelToSprites(_spriteAtlas,true), controlID);
+            }
             EditorApplication.update += Update;
         }
         
@@ -40,6 +50,7 @@ namespace UnityEditor.UI
                 }
                 else if (currentID == 0 && currentID != controlID)//当前的图集窗口已经关闭了,需要展示出来图集精灵窗口了,状态1 结束,当前状态切换为 2
                 {
+                    if (_spriteAtlas == null) return;
                     currentState = 2;
                     //展示图集中的所有精灵(图片)
                     controlID = GUIUtility.GetControlID(FocusType.Passive);
@@ -53,12 +64,14 @@ namespace UnityEditor.UI
                 {
                     Object selected = EditorGUIUtility.GetObjectPickerObject();
                     _sprite = selected as Sprite;
+                    if (_sprite != null) _sprite = _spriteAtlas.GetSprite(_sprite.name);
                     OnSelectedSprite?.Invoke(_sprite);
                 }
                 else if (currentID == 0 && currentID != controlID) //状态 2 结束,进入状态 3,所有的事情全部清空
                 {
                     currentState = 3;
                     EditorApplication.update -= Update;
+                    if (_sprite != null) _sprite = _spriteAtlas.GetSprite(_sprite.name);
                     OnSelectedSprite?.Invoke(_sprite);
                 }
             }

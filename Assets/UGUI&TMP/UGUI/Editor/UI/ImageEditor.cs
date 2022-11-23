@@ -1,8 +1,6 @@
-using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEditor.AnimatedValues;
-using UnityEngine.U2D;
 using UnityEngine.UI;
 
 namespace UnityEditor.UI
@@ -37,9 +35,6 @@ namespace UnityEditor.UI
         AnimBool m_ShowTiled;
         AnimBool m_ShowFilled;
         AnimBool m_ShowType;
-
-
-        private const string _spriteAtlasPlaceholder = "Select SpriteAtlas --> Sprite";
 
         private class Styles
         {
@@ -125,17 +120,10 @@ namespace UnityEditor.UI
             m_ShowTiled.valueChanged.RemoveListener(Repaint);
             m_ShowFilled.valueChanged.RemoveListener(Repaint);
         }
-        
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            var controlID = GUIUtility.GetControlID(FocusType.Passive);
-
-            if (GUILayout.Button(_spriteAtlasPlaceholder))
-            {
-                SpriteAtlasWindow.ShowSpriteAtlasWindow();
-                SpriteAtlasWindow.OnSelectedSprite = SetSprite;
-            }
 
             SpriteGUI();
             AppearanceControlsGUI();
@@ -170,25 +158,15 @@ namespace UnityEditor.UI
             bool showNativeSize = (type == Image.Type.Simple || type == Image.Type.Filled) && m_Sprite.objectReferenceValue != null;
             base.SetShowNativeSize(showNativeSize, instant);
         }
-        
-        private void SetSprite(Sprite sprite)
-        {
-            (target as Image).sprite = sprite;
-            (target as Image).SetNativeSize();
-            EditorUtility.SetDirty(target);
-            // SetShowNativeSize(true);
-            // m_Sprite                = serializedObject.FindProperty("m_Sprite");
-        }
 
         /// <summary>
         /// Draw the atlas and Image selection fields.
         /// </summary>
+
         protected void SpriteGUI()
         {
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(m_Sprite, m_SpriteContent);
-            EditorGUILayout.EndHorizontal();
             if (EditorGUI.EndChangeCheck())
             {
                 var newSprite = m_Sprite.objectReferenceValue as Sprite;
